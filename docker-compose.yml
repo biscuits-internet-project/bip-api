@@ -2,6 +2,12 @@ version: '3'
 services:
   db:
     image: postgres
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: development
+      POSTGRES_PASSWORD: 
+      POSTGRES_DB: bip_dev
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
   web:
