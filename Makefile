@@ -1,6 +1,8 @@
-install: ## Install or update dependencies
-	docker-compose run web bundle exec bundle install
+migrate:
 	docker-compose run web bundle exec rake db:migrate
+
+rollback:
+	docker-compose run web bundle exec rake db:rollback
 
 build:
 	docker-compose build
@@ -8,14 +10,15 @@ build:
 seed:
 	docker-compose run web bundle exec rake db:seed
  
-run: ## Start the app server
+run:
 	docker-compose up
  
-test: ## Run the tests
-	docker-compose run web bundle exec rspec ./specs
+test:
+	docker-compose run -e "RAILS_ENV=test" web bundle exec rake db:create db:migrate
+	docker-compose run -e "RAILS_ENV=test" web bundle exec rspec
  
-clean: ## Clean temporary files and installed dependencies
+clean:
 	rm -rf ./tmp
 	rm -rf ./vendor
  
-.PHONY: install run test clean
+.PHONY: install migrate build seed run test clean rollback
