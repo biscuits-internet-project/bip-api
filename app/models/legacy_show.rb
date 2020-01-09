@@ -1,0 +1,4 @@
+class LegacyShow < ApplicationRecord
+end
+  
+  
