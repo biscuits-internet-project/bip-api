@@ -56,10 +56,10 @@ namespace :tracks do
         if song.nil?
           puts legacy_show.inspect
           puts "can't find song for legacy abbr #{set_part}"
+          next
         end
+
         track.song = song
-
-
         track.set = set_number
         track.show = show
 
