@@ -3,7 +3,7 @@ class AnnotationsController < ApplicationController
 
   # GET /annotations
   def index
-    @annotations = Annotation.all
+    @annotations = Annotation.all.limit(100)
 
     render json: @annotations
   end

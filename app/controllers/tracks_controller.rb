@@ -3,7 +3,7 @@ class TracksController < ApplicationController
 
   # GET /tracks
   def index
-    @tracks = Track.all
+    @tracks = Track.all.limit(100)
 
     render json: @tracks
   end
