@@ -21,4 +21,4 @@ clean:
 	rm -rf ./tmp
 	rm -rf ./vendor
  
-.PHONY: install migrate build seed run test clean rollback
+.PHONY: migrate build seed run test clean rollback

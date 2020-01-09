@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_05_210613) do
+ActiveRecord::Schema.define(version: 2020_01_09_085036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -40,6 +40,35 @@ ActiveRecord::Schema.define(version: 2020_01_05_210613) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "legacy_shows", id: false, force: :cascade do |t|
+    t.integer "id", null: false
+    t.integer "band"
+    t.date "date"
+    t.integer "venue", default: 0, null: false
+    t.text "set1"
+    t.text "set2"
+    t.text "set3"
+    t.text "set4"
+    t.text "encore1"
+    t.text "encore2"
+    t.text "precomment"
+    t.text "comment1"
+    t.text "comment2"
+    t.text "comment3"
+    t.text "comment4"
+    t.text "comment5"
+    t.text "comment6"
+    t.text "comment7"
+    t.text "comment8"
+    t.text "comment9"
+    t.text "comment10"
+    t.text "sources"
+    t.text "flips"
+    t.integer "showorder"
+    t.text "reviews"
+    t.string "archiveorg", limit: 300
+  end
+
   create_table "shows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "slug"
     t.datetime "date"
@@ -53,7 +82,7 @@ ActiveRecord::Schema.define(version: 2020_01_05_210613) do
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
-    t.string "slug", null: false
+    t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "lyrics"
@@ -72,6 +101,14 @@ ActiveRecord::Schema.define(version: 2020_01_05_210613) do
     t.string "set", null: false
     t.integer "position", null: false
     t.string "segue"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email_address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
