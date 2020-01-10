@@ -4,9 +4,9 @@ class SongsController < ApplicationController
 
   # GET /songs
   def index
-    @songs = Song.all
+    songs = Song.all
 
-    render json: @songs
+    render json: SongSerializer.render(songs)
   end
 
   # GET /songs/1

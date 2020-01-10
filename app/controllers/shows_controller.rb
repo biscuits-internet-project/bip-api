@@ -4,9 +4,9 @@ class ShowsController < ApplicationController
 
   # GET /shows
   def index
-    @shows = Show.all
+    shows = Show.includes(:venue, tracks: [:annotations, :song]).all.limit(100)
 
-    render json: @shows
+    render json: ShowSerializer.render(shows, view: :setlist)
   end
 
   # GET /shows/1

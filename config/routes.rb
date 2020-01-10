@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  root to: 'health#index'
 
-  #resources :users
-  resources :health, only: [:show]
   resources :annotations
   resources :tracks
   resources :shows

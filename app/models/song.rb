@@ -3,4 +3,6 @@ class Song < ApplicationRecord
   friendly_id :title, use: [:sequentially_slugged, :finders]
 
   validates :title, :slug, presence: true
+
+  belongs_to :author
 end

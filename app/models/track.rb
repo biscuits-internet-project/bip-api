@@ -4,4 +4,7 @@ class Track < ApplicationRecord
   has_many :annotations, dependent: :destroy
 
   validates :song, :show, :position, :set, presence: true
+
+  delegate :title, to: :song, prefix: true
+  delegate :slug, to: :song, prefix: true
 end

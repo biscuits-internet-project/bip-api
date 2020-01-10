@@ -4,5 +4,4 @@ class Author < ApplicationRecord
 
   validates :name, :slug, presence: true
   has_many :songs
-
 end
