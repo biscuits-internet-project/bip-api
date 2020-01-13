@@ -1,6 +1,6 @@
-class VenuesController < ApplicationController
+class VenuesController < ApiController
   before_action :set_venue, only: [:show, :update, :destroy]
-  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :authenticate_user, only: [:create, :update, :destroy]
 
   # GET /venues
   def index

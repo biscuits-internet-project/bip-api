@@ -10,8 +10,7 @@ gem 'rack-cors'
 gem 'friendly_id'
 gem 'stamp'
 gem 'blueprinter'
-gem 'jwt'
-gem 'bcrypt', '~> 3.1.7'
+gem 'knock'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
@@ -31,6 +30,7 @@ group :development, :test do
   gem 'factory_bot'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
+  gem 'dotenv-rails'
 end
 
 group :development do

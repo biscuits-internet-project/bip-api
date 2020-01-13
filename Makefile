@@ -4,21 +4,20 @@ migrate:
 rollback:
 	docker-compose run web bundle exec rake db:rollback
 
-build:
+bundle:
 	docker-compose build
 
 seed:
 	docker-compose run web bundle exec rake db:seed
  
-run:
+up:
 	docker-compose up
  
 test:
-	docker-compose run -e "RAILS_ENV=test" web bundle exec rake db:create db:migrate
-	docker-compose run -e "RAILS_ENV=test" web bundle exec rspec
+	docker-compose run web rake
  
 clean:
 	rm -rf ./tmp
 	rm -rf ./vendor
  
-.PHONY: migrate build seed run test clean rollback
+.PHONY: migrate bundle seed up test clean rollback

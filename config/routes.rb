@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
 
-  root to: 'health#index'
+  scope :api, defaults: { format: :json } do
 
-  resources :annotations
-  resources :tracks
-  resources :shows
-  resources :bands
-  resources :venues
-  resources :songs, only: [:index]
+    root to: 'health#index'
+
+    resources :annotations
+    resources :tracks
+    resources :shows
+    resources :bands
+    resources :venues
+    resources :songs
+    resources :users
+    post "user_token" => 'user_token#create'
+  end
 
 end
