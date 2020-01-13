@@ -4,7 +4,16 @@ class ShowsController < ApiController
 
   # GET /shows
   def index
-    shows = Show.includes(:venue, tracks: [:annotations, :song]).all.limit(100)
+    shows = Show.includes(:venue, tracks: [:annotations, :song]).order(:date)
+    
+    if params[:year].present?
+      shows = shows.by_year(params[:year].to_i)
+    end
+
+    if params[:venue].present?
+      venue = Venue.find(params[:venue])
+      shows = shows.where(venue_id: venue.id)
+    end
 
     render json: ShowSerializer.render(shows, view: :setlist)
   end
