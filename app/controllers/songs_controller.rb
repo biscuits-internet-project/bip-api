@@ -11,7 +11,7 @@ class SongsController < ApiController
 
   # GET /songs/1
   def show
-    render json: @song
+    render json: SongSerializer.render(@song)
   end
 
   # POST /songs

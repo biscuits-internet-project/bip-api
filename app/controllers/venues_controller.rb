@@ -4,14 +4,14 @@ class VenuesController < ApiController
 
   # GET /venues
   def index
-    @venues = Venue.all
+    venues = Venue.all
 
-    render json: @venues
+    render json: VenueSerializer.render(venues)
   end
 
   # GET /venues/1
   def show
-    render json: @venue
+    render json: VenueSerializer.render(@venue)
   end
 
   # POST /venues

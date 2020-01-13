@@ -11,7 +11,7 @@ class ShowsController < ApiController
 
   # GET /shows/1
   def show
-    render json: @show
+    render json: ShowSerializer.render(@show, view: :setlist)
   end
 
   # POST /shows
