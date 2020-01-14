@@ -6,6 +6,9 @@ class Venue < ApplicationRecord
 
   has_many :shows
 
+  scope :city, -> (city, state) { where(city: city, state: state) }
+  scope :state, -> (state) { where(state: state) }
+
   def slug_candidates
     [
       :name,

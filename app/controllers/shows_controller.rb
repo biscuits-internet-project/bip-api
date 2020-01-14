@@ -4,15 +4,25 @@ class ShowsController < ApiController
 
   # GET /shows
   def index
-    shows = Show.includes(:venue, tracks: [:annotations, :song]).order(:date)
+    shows = Show.includes(:venue, tracks: [:annotations, :song])
     
     if params[:year].present?
-      shows = shows.by_year(params[:year].to_i)
+      shows = shows.by_year(params[:year].to_i).order(:date)
     end
 
     if params[:venue].present?
       venue = Venue.find(params[:venue])
-      shows = shows.where(venue_id: venue.id)
+      shows = shows.where(venue_id: venue.id).order(:date)
+    end
+
+    if params[:last].present?
+      shows = shows.order("date desc").take(params[:last].to_i)
+    end
+
+    if params[:city].present? && params[:state].present?
+      shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
+    elsif params[:state].present?
+      shows = shows.joins(:venue).merge(Venue.state(params[:state]))
     end
 
     render json: ShowSerializer.render(shows, view: :setlist)
