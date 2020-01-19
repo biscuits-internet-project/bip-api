@@ -3,6 +3,7 @@ class Venue < ApplicationRecord
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders]
 
   validates :name, :slug, presence: true
+  validates :slug, unique: true
 
   has_many :shows
 

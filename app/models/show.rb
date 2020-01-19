@@ -8,7 +8,8 @@ class Show < ApplicationRecord
   belongs_to :band
   has_many :tracks, dependent: :destroy
 
-  #validates :venue, :slug, :band, presence: true
+  validates :venue, :slug, :band, presence: true
+  validates :slug, unique: true
 
   def slug_candidates
     [

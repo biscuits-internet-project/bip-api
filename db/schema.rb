@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_004432) do
+ActiveRecord::Schema.define(version: 2020_01_19_230656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_004432) do
 
   create_table "authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "slug"
+    t.string "slug", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_authors_on_slug"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_004432) do
 
   create_table "bands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "slug"
+    t.string "slug", null: false
     t.integer "legacy_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_004432) do
   end
 
   create_table "shows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "slug"
+    t.string "slug", null: false
     t.datetime "date"
     t.uuid "venue_id"
     t.uuid "band_id"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_004432) do
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
-    t.string "slug"
+    t.string "slug", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "lyrics"
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_004432) do
 
   create_table "venues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.string "slug"
+    t.string "slug", null: false
     t.string "street"
     t.string "city"
     t.string "state"
@@ -139,4 +139,10 @@ ActiveRecord::Schema.define(version: 2020_01_13_004432) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "annotations", "tracks"
+  add_foreign_key "shows", "bands"
+  add_foreign_key "shows", "venues"
+  add_foreign_key "songs", "authors"
+  add_foreign_key "tracks", "shows"
+  add_foreign_key "tracks", "songs"
 end
