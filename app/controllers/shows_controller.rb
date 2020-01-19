@@ -35,19 +35,20 @@ class ShowsController < ApplicationController
 
   # POST /shows
   def create
-    @show = Show.new(show_params)
+    show = Show.new(show_params)
+    show.band_id = '4cccc925-8cd3-40a3-9ec1-5b9fd14dd040'
 
-    if @show.save
-      render json: @show, status: :created, location: @show
+    if show.save
+      render json: ShowSerializer.render(show, view: :normal), status: :created
     else
-      render json: @show.errors, status: :unprocessable_entity
+      render json: show.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /shows/1
   def update
     if @show.update(show_params)
-      render json: @show
+      render json: ShowSerializer.render(@show, view: :normal)
     else
       render json: @show.errors, status: :unprocessable_entity
     end
@@ -59,13 +60,11 @@ class ShowsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_show
       @show = Show.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def show_params
-      params.fetch(:show, {})
+      params.permit(:date, :venue_id, :notes)
     end
 end
