@@ -1,6 +1,6 @@
 class ShowsController < ApiController
   before_action :set_show, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:create, :update, :destroy]
+  before_action :authenticate!, only: [:create, :update, :destroy]
 
   # GET /shows
   def index

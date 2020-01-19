@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     resources :venues
     resources :songs
     resources :users
-    post "user_token" => 'user_token#create'
+    post '/auth/login', to: 'authentications#login'
   end
 
 end

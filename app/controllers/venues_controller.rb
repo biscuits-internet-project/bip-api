@@ -1,6 +1,6 @@
-class VenuesController < ApiController
+class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:create, :update, :destroy]
+  before_action :authenticate!, only: [:create, :update, :destroy]
 
   # GET /venues
   def index
@@ -19,7 +19,7 @@ class VenuesController < ApiController
     @venue = Venue.new(venue_params)
 
     if @venue.save
-      render json: @venue, status: :created, location: @venue
+      render json: VenueSerializer.render(@venue), status: :created, location: @venue
     else
       render json: @venue.errors, status: :unprocessable_entity
     end
@@ -28,7 +28,7 @@ class VenuesController < ApiController
   # PATCH/PUT /venues/1
   def update
     if @venue.update(venue_params)
-      render json: @venue
+      render json: VenueSerializer.render(@venue)
     else
       render json: @venue.errors, status: :unprocessable_entity
     end
@@ -40,13 +40,12 @@ class VenuesController < ApiController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_venue
       @venue = Venue.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def venue_params
-      params.fetch(:venue, {})
+      params.fetch(:venue, {}).permit(:name, :street, :city, :state, :country, :postal_code, :phone, :website)
     end
 end

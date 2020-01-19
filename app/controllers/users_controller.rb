@@ -1,6 +1,6 @@
 class UsersController < ApiController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:update, :destroy, :index, :show]
+  before_action :authenticate!, only: [:update, :destroy, :index, :show]
 
   # GET /users
   def index
