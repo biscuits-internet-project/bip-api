@@ -1,4 +1,4 @@
-class AnnotationsController < ApiController
+class AnnotationsController < ApplicationController
   before_action :set_annotation, only: [:show, :update, :destroy]
   before_action :authenticate!, only: [:create, :update, :destroy]
 

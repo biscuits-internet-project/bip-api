@@ -5,4 +5,6 @@ class Song < ApplicationRecord
   validates :title, :slug, presence: true
 
   belongs_to :author
+
+  delegate :name, to: :author, prefix: 'author', allow_nil: true
 end

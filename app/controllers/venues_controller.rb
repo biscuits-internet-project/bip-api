@@ -44,8 +44,7 @@ class VenuesController < ApplicationController
       @venue = Venue.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def venue_params
-      params.fetch(:venue, {}).permit(:name, :street, :city, :state, :country, :postal_code, :phone, :website)
+      params.permit(:name, :street, :city, :state, :country, :postal_code, :phone, :website)
     end
 end

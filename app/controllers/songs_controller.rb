@@ -1,10 +1,10 @@
-class SongsController < ApiController
+class SongsController < ApplicationController
   before_action :set_song, only: [:show, :update, :destroy]
   before_action :authenticate!, only: [:create, :update, :destroy]
 
   # GET /songs
   def index
-    songs = Song.all
+    songs = Song.includes(:author).all
 
     render json: SongSerializer.render(songs)
   end
@@ -16,19 +16,19 @@ class SongsController < ApiController
 
   # POST /songs
   def create
-    @song = Song.new(song_params)
+    song = Song.new(song_params)
 
-    if @song.save
-      render json: @song, status: :created, location: @song
+    if song.save
+      render json: SongSerializer.render(song), status: :created
     else
-      render json: @song.errors, status: :unprocessable_entity
+      render json: song.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /songs/1
   def update
     if @song.update(song_params)
-      render json: @song
+      render json: SongSerializer.render(@song)
     else
       render json: @song.errors, status: :unprocessable_entity
     end
@@ -40,13 +40,11 @@ class SongsController < ApiController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_song
       @song = Song.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def song_params
-      params.fetch(:song, {})
+      params.permit(:title, :cover, :notes, :lyrics, :tabs, :author_id)
     end
 end

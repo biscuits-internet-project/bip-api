@@ -1,4 +1,4 @@
-class BandsController < ApiController
+class BandsController < ApplicationController
   before_action :set_band, only: [:show, :update, :destroy]
   before_action :authenticate!, only: [:create, :update, :destroy]
 
