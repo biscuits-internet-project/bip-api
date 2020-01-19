@@ -1,6 +1,6 @@
 class AnnotationsController < ApplicationController
   before_action :set_annotation, only: [:show, :update, :destroy]
-  before_action :authenticate!, only: [:create, :update, :destroy]
+  before_action :ensure_admin!, only: [:create, :update, :destroy]
 
   # GET /annotations
   def index

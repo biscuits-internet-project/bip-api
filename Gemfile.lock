@@ -157,6 +157,7 @@ GEM
       io-console (~> 0.5)
     reverse_markdown (1.4.0)
       nokogiri
+    rolify (5.2.0)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -246,6 +247,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rack-cors
   rails (~> 6.0.0)
+  rolify
   rspec
   rspec-rails
   shoulda-matchers

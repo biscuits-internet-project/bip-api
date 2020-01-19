@@ -1,5 +1,5 @@
 class AuthenticationsController < ApplicationController
-  before_action :authenticate!, except: :login
+  before_action :ensure_admin!, except: :login
 
   # POST /auth/login
   def login

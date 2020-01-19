@@ -20,6 +20,9 @@ up:
 test:
 	docker-compose run web rake
  
+console:
+	docker-compose run web "bin/rails c"
+
 clean:
 	rm -rf ./tmp
 	rm -rf ./vendor

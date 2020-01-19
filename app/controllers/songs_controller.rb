@@ -1,6 +1,6 @@
 class SongsController < ApplicationController
   before_action :set_song, only: [:show, :update, :destroy]
-  before_action :authenticate!, only: [:create, :update, :destroy]
+  before_action :ensure_admin!, only: [:create, :update, :destroy]
 
   # GET /songs
   def index

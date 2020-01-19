@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::API
 
-
   def not_found
     render json: { error: 'not_found' }
   end
@@ -18,6 +17,10 @@ class ApplicationController < ActionController::API
     end
   end
 
-
+  def ensure_admin!
+    authenticate!
+    return if @current_user.has_role?(:admin)
+    render json: { errors: 'User lacks permission to take that action' }, status: :forbidden
+  end
 
 end
