@@ -7,4 +7,7 @@ class User < ApplicationRecord
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
 
+  def confirmed?
+    confirmed_at.present?
+  end
 end

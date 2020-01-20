@@ -17,6 +17,8 @@ class UsersController < ApplicationController
   # POST /users
   def create
     user = User.new(user_params)
+    # auto-confirm since this is admin only
+    user.confirmed_at = DateTime.now
 
     if user.save
       render json: UserSerializer.render(user), status: :created
@@ -40,13 +42,11 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def user_params
-      params.fetch(:user, {}).permit(:email, :password, :password_confirmation)
+      params.permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end
 end

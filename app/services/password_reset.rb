@@ -1,4 +1,4 @@
-class ResetPassword
+class PasswordReset
 
   attr_reader :user
 

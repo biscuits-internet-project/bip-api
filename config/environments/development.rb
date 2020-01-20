@@ -49,4 +49,8 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.file_watcher = ActiveSupport::FileUpdateChecker
+
+  Rails.logger = Logger.new(STDOUT)
+  Rails.logger.level = Logger::DEBUG
+  config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
 end

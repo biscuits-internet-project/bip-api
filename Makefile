@@ -23,8 +23,11 @@ test:
 console:
 	docker-compose run web "bin/rails c"
 
+bash:
+	docker-compose run web bash 
+
 clean:
 	rm -rf ./tmp
 	rm -rf ./vendor
  
-.PHONY: migrate build seed up test clean rollback
+.PHONY: migrate build seed up test clean rollback bash

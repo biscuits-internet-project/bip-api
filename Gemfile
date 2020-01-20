@@ -13,6 +13,7 @@ gem 'blueprinter'
 gem 'jwt'
 gem 'bcrypt', '~> 3.1.7'
 gem 'rolify'
+gem 'honeybadger', '~> 4.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'

@@ -6,4 +6,9 @@ class UserNotifierMailer < ApplicationMailer
     mail(to: @user.email, subject: '[bip] Reset Password')
   end
 
+  def send_confirmation(user)
+    @user = user
+    mail(to: @user.email, subject: '[bip] Confirm Email')
+  end
+
 end

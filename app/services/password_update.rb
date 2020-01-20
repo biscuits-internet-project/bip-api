@@ -1,4 +1,4 @@
-class UpdatePassword
+class PasswordUpdate
 
   attr_reader :token, :password
 
