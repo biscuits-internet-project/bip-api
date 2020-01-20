@@ -24,6 +24,7 @@ module Bip
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
     config.jwt_secret_key = ENV['JWT_SECRET_KEY']
+    config.bip_ui_url = "http://www.discobiscuits.net"
 
     require './lib/json_web_token'
 

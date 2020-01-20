@@ -13,6 +13,26 @@ class AuthenticationsController < ApplicationController
     end
   end
 
+  # POST /auth/password/reset
+  def password_reset
+    user = User.find_by_email(params[:email])
+
+    ResetPassword.new(user).execute
+
+    render json: {}, status: :ok
+  end
+
+  # PUT /auth/password/update
+  def password_update
+    result = UpdatePassword.new(token, params[:password]).execute
+
+    if result.success?
+      render json: {}, status: :ok
+    else
+      render json: result.errors, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def login_params

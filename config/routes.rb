@@ -11,7 +11,10 @@ Rails.application.routes.draw do
     resources :venues
     resources :songs
     resources :users
+
     post '/auth/login', to: 'authentications#login'
+    post '/auth/password/reset', to: 'authenticatiosn#password_reset'
+    put '/auth/password/update', to: 'authentications#password_update'
   end
 
 end
