@@ -4,7 +4,7 @@ class VenuesController < ApplicationController
 
   # GET /venues
   def index
-    venues = Venue.all
+    venues = Venue.order(:name).all
 
     render json: VenueSerializer.render(venues)
   end
