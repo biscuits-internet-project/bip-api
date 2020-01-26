@@ -1,4 +1,5 @@
 class UserConfirm
+  prepend SimpleCommand
 
   attr_reader :token
 
@@ -6,17 +7,15 @@ class UserConfirm
     @token = token
   end
 
-  def execute
+  def call
     user = User.find_by(confirmation_token: token)
   
-    if user.nil?
-      return OpenStruct.new(success?: false, user: user, errors: user.errors)
+    if user.present?
+      user.update_attribute(:confirmed_at, DateTime.now)
+      return user
+    else
+      errors.add(:base, "Error finding user by confirmation token")
     end
-
-    user.confirmed_at = DateTime.now
-    result = user.save
-
-    return OpenStruct.new(success?: result, user: user, errors: user.errors)
   end
 
 end
