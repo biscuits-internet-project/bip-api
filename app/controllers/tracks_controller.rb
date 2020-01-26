@@ -1,6 +1,7 @@
 class TracksController < ApplicationController
+  skip_before_action :authenticate_request, only: [:index, :show]
+  before_action :authorize_admin, only: [:create, :update, :destroy]
   before_action :set_track, only: [:show, :update, :destroy]
-  before_action :ensure_admin!, only: [:create, :update, :destroy]
 
   # GET /tracks
   def index
