@@ -14,22 +14,22 @@ class AuthenticationsController < ApplicationController
 
   # POST /auth/register
   def register
-    result = UserRegister.new(user_params).execute
+    command = UserRegister.call(user_params)
   
-    if result.success?
+    if command.success?
       render json: {}, status: :created
     else
-      render json: result.errors, status: :unprocessable_entity
+      render json: command.errors, status: :unprocessable_entity
     end
   end
 
   def confirm
-    result = UserConfirm.new(params[:token]).execute
+    command = UserConfirm.call(params[:token])
   
-    if result.success?
+    if command.success?
       render json: {}, status: :created
     else
-      render json: user.errors, status: :unprocessable_entity
+      render json: command.errors, status: :unprocessable_entity
     end
   end
 
@@ -37,19 +37,27 @@ class AuthenticationsController < ApplicationController
   def password_reset
     user = User.find_by_email(params[:email])
 
-    PasswordReset.new(user).execute
+    if user.nil?
+      render json: { error: "User not found" }, status: 404
+    else
+      command = PasswordReset.call(user)
 
-    render json: {}, status: :ok
+      if command.success?
+        render json: {}, status: :created
+      else
+        render json: command.errors, status: :unprocessable_entity
+      end
+    end
   end
 
   # PUT /auth/password/update
   def password_update
-    result = PasswordUpdate.new(token, params[:password]).execute
+    command = PasswordUpdate.call(params[:token], params[:password])
 
-    if result.success?
+    if command.success?
       render json: {}, status: :ok
     else
-      render json: result.errors, status: :unprocessable_entity
+      render json: command.errors, status: :unprocessable_entity
     end
   end
 

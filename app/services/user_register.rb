@@ -1,4 +1,5 @@
 class UserRegister
+  prepend SimpleCommand
 
   attr_reader :params
 
@@ -6,22 +7,15 @@ class UserRegister
     @params = params
   end
 
-  def execute
-
-    Rails.logger.info params.inspect
-
+  def call
     user = User.new(params)
   
     if user.save
-      user.confirmation_token = SecureRandom.uuid
-      user.confirmation_sent_at = DateTime.now
-      user.save!
-
+      user.update_attributes(confirmation_token: SecureRandom.uuid, confirmation_sent_at: DateTime.now)
       UserNotifierMailer.send_confirmation(user).deliver
-
-      return OpenStruct.new(success?: true, user: user, errors: user.errors)
+      return user
     else
-      return OpenStruct.new(success?: false, user: user, errors: user.errors)
+      errors.merge!(user.errors)
     end
   end
 

@@ -1,4 +1,5 @@
 class PasswordUpdate
+  prepend SimpleCommand
 
   attr_reader :token, :password
 
@@ -7,19 +8,23 @@ class PasswordUpdate
     @password = password
   end
 
-  def execute
+  def call
     user = User.find_by(reset_password_token: token)
 
     if user.nil? || user.reset_password_sent_at > 1.hour.ago
-      return OpenStruct.new(success?: false, user: nil, errors: "Reset password has expired. Please try again.")
+      errors.add(:base, "Reset password has expired. Please try again.")
+      return
     end
 
     user.password = password
     user.reset_password_token = SecureRandom.uuid
     user.reset_password_sent_at = DateTime.now
-    result = user.save
-    
-    return OpenStruct.new(success?: result, user: user, errors: user.errors)
+
+    if user.save
+      return user
+    else
+      errors.merge(user.errors)
+    end
   end
 
 end
