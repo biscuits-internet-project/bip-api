@@ -12,7 +12,6 @@ require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
-#require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -23,10 +22,10 @@ module Bip
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.autoload_paths << Rails.root.join('lib')
+
     config.jwt_secret_key = ENV['JWT_SECRET_KEY']
     config.bip_ui_url = "http://www.discobiscuits.net"
-
-    require './lib/json_web_token'
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

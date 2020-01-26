@@ -1,15 +1,14 @@
 class AuthenticationsController < ApplicationController
+  skip_before_action :authenticate_request
 
   # POST /auth/login
   def login
-    user = User.find_by_email(params[:email])
+    command = AuthenticateUser.call(params[:email], params[:password])
 
-    if user&.user.confirmed?&.user&.authenticate(params[:password])
-      token = JsonWebToken.encode(user_id: user.id)
-      time = Time.now + 24.hours.to_i
-      render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M") }, status: :ok
+    if command.success?
+      render json: { token: command.result }
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      render json: { error: command.errors }, status: :unauthorized
     end
   end
 
