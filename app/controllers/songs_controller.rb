@@ -5,14 +5,14 @@ class SongsController < ApplicationController
 
   # GET /songs
   def index
-    songs = Song.includes(:author).all
+    songs = Song.includes(:author).order(:title).all
 
     render json: SongSerializer.render(songs)
   end
 
   # GET /songs/1
   def show
-    render json: SongSerializer.render(@song)
+    render json: SongSerializer.render(@song, view: :details)
   end
 
   # POST /songs
