@@ -4,13 +4,13 @@ Rails.application.routes.draw do
 
     root to: 'health#index'
 
-    resources :annotations
     resources :tracks
     resources :shows
     resources :bands
     resources :venues
     resources :songs
     resources :users
+    resources :authors
 
     post '/auth/login', to: 'authentications#login'
     post '/auth/register', to: 'authentications#register'
