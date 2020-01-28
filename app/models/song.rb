@@ -12,11 +12,11 @@ class Song < ApplicationRecord
   delegate :name, to: :author, prefix: 'author', allow_nil: true
 
   def last_time_played
-    shows.order("date asc").last.date
+    shows.order("date asc").last&.date
   end
 
   def first_time_played
-    shows.order("date asc").first.date
+    shows.order("date asc").first&.date
   end
 
   def times_played
