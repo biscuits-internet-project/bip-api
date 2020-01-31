@@ -1,13 +1,12 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:index, :show]
-  before_action :authorize_admin, only: [:create, :update, :destroy]
+  before_action :authorize_admin
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
   def index
-    @users = User.all
+    users = User.all
 
-    render json: UserSerializer.render(@users)
+    render json: UserSerializer.render(users)
   end
 
   # GET /users/1
@@ -31,7 +30,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      render json: @user
+      render json: UserSerializer.render(@user)
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -48,6 +47,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.permit(:first_name, :last_name, :email, :password, :password_confirmation)
+      params.permit(:first_name, :last_name, :email, :password, :password_confirmation, :username)
     end
 end
