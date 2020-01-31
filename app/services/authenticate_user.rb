@@ -8,7 +8,13 @@ class AuthenticateUser
 
   def call
     if user
-      JsonWebToken.encode(user_id: user.id, roles: user.roles.map(&:name))
+      JsonWebToken.encode(
+        user_id: user.id,
+        roles: user.roles.map(&:name),
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username
+      )
     end
   end
 
