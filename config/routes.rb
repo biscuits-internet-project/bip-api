@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :users
     resources :authors
 
+    get '/tracks/songs/:song_id', to: 'tracks#index'
     post '/auth/login', to: 'authentications#login'
     post '/auth/register', to: 'authentications#register'
     post '/auth/confirm', to: 'authentications#confirm'

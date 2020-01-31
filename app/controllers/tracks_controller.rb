@@ -3,11 +3,12 @@ class TracksController < ApplicationController
   before_action :authorize_admin, only: [:create, :update, :destroy]
   before_action :set_track, only: [:show, :update, :destroy]
 
-  # GET /tracks
+  # GET /tracks/song/:id
   def index
-    @tracks = Track.all.limit(100)
+    song = Song.find(params["song_id"])
+    tracks = Track.includes(:annotations, show: :venue).where(song_id: song.id).order('shows.date').to_a
 
-    render json: @tracks
+    render json: TrackSerializer.render(tracks, view: :versions)
   end
 
   # GET /tracks/1
