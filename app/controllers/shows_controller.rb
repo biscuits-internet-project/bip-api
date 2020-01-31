@@ -36,13 +36,13 @@ class ShowsController < ApplicationController
 
   # POST /shows
   def create
-    show = Show.new(show_params)
-    show.band_id = '4cccc925-8cd3-40a3-9ec1-5b9fd14dd040'
+    command = ShowCreate.call(show_params, params[:tracks])
 
-    if show.save
-      render json: ShowSerializer.render(show, view: :normal), status: :created
+    if command.success?
+      show = Show.find(command.result.id)
+      render json: ShowSerializer.render(show, view: :setlist), status: :created
     else
-      render json: show.errors, status: :unprocessable_entity
+      render json: command.errors, status: :unprocessable_entity
     end
   end
 
