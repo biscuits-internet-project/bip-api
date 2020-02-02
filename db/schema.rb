@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_31_052321) do
+ActiveRecord::Schema.define(version: 2020_02_02_204419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_052321) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_bands_on_slug", unique: true
   end
 
   create_table "legacy_shows", id: false, force: :cascade do |t|
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_052321) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_shows_on_slug", unique: true
   end
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -124,6 +126,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_052321) do
     t.boolean "cover", default: false
     t.uuid "author_id"
     t.text "legacy_author"
+    t.index ["slug"], name: "index_songs_on_slug", unique: true
   end
 
   create_table "tracks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -176,6 +179,7 @@ ActiveRecord::Schema.define(version: 2020_01_31_052321) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_venues_on_slug", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
