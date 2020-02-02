@@ -8,9 +8,13 @@ class UserRegister
   end
 
   def call
-    user = User.new(params)
+    avatar = params[:avatar]
+    user = User.new(params.except(:avatar))
   
     if user.save
+      if avatar.present?
+        user.avatar.attach(avatar)
+      end
       user.update_attributes(confirmation_token: SecureRandom.uuid, confirmation_sent_at: DateTime.now)
       UserNotifierMailer.send_confirmation(user).deliver
       return user
