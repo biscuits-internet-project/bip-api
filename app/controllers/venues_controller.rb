@@ -12,7 +12,7 @@ class VenuesController < ApplicationController
 
   # GET /venues/1
   def show
-    render json: VenueSerializer.render(@venue)
+    render json: VenueSerializer.render(@venue, view: :details)
   end
 
   # POST /venues

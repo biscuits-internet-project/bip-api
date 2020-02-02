@@ -17,4 +17,16 @@ class Venue < ApplicationRecord
       [:name, :city, :state],
     ]
   end
+
+  def last_time_played
+    shows.order("date asc").last&.date
+  end
+
+  def first_time_played
+    shows.order("date asc").first&.date
+  end
+
+  def times_played
+    shows.uniq.count
+  end
 end
