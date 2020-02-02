@@ -42,7 +42,7 @@ class ShowsController < ApplicationController
       show = Show.find(command.result.id)
       render json: ShowSerializer.render(show, view: :setlist), status: :created
     else
-      render json: command.errors, status: :unprocessable_entity
+      render json: { errors: command.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
