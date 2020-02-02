@@ -16,14 +16,13 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    user = User.new(user_params)
-    # auto-confirm since this is admin only
-    user.confirmed_at = DateTime.now
-
-    if user.save
+    command = UserCreate.call(user_params)
+  
+    if command.success?
+      user = User.find(command.result.id)
       render json: UserSerializer.render(user), status: :created
     else
-      render json: user.errors, status: :unprocessable_entity
+      render json: command.errors, status: :unprocessable_entity
     end
   end
 
