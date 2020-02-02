@@ -23,13 +23,14 @@ class AuthenticationsController < ApplicationController
     end
   end
 
+  # GET /auth/confirm
   def confirm
     command = UserConfirm.call(params[:token])
   
     if command.success?
-      render json: {}, status: :created
+      redirect_to Rails.configuration.bip_ui_url + "/login?confirmed=true"
     else
-      render json: command.errors, status: :unprocessable_entity
+      redirect_to Rails.configuration.bip_ui_url + "/login?confirmed=false"
     end
   end
 

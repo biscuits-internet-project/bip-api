@@ -2,6 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.bip_ui_url = "http://localhost:3001"
+  config.bip_api_url = "http://localhost:3000"
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

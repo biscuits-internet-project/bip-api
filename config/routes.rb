@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     get '/tracks/songs/:song_id', to: 'tracks#index'
     post '/auth/login', to: 'authentications#login'
     post '/auth/register', to: 'authentications#register'
-    post '/auth/confirm', to: 'authentications#confirm'
+    get '/auth/confirm', to: 'authentications#confirm'
     post '/auth/password/reset', to: 'authentications#password_reset'
     put '/auth/password/update', to: 'authentications#password_update'
     post '/contact', to: 'contact#create'

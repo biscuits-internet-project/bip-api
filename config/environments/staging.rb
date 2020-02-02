@@ -2,6 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.bip_ui_url = "https://stg-ui.discobiscuits.net"
+  config.bip_api_url = "https://stg-api.discobiscuits.net/api"
 
   # Code is not reloaded between requests.
   config.cache_classes = true

@@ -7,6 +7,6 @@
     <h1>Verify your email address</h1>
     <p>To verify your email address, please click on the link below.</p>
 
-    <a href="<%= Rails.configuration.bip_ui_url %>/register/confirm?token=<%= @user.confirmation_token %>">Verify your email</a>
+    <a href="<%= Rails.configuration.bip_api_url %>/auth/confirm?token=<%= @user.confirmation_token %>">Verify your email</a>
   </body>
 </html>
