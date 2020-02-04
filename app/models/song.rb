@@ -11,6 +11,17 @@ class Song < ApplicationRecord
 
   delegate :name, to: :author, prefix: 'author', allow_nil: true
 
+  after_save    :expire_song_all_cache
+  after_destroy :expire_song_all_cache
+
+  def self.all_cached
+    Rails.cache.fetch('Song.all') { Song.includes(:author).order(:title).all.to_a }
+  end
+
+  def expire_song_all_cache
+    Rails.cache.delete('Song.all')
+  end
+
   def last_time_played
     shows.order("date asc").last&.date
   end
