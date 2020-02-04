@@ -5,9 +5,12 @@ class VenuesController < ApplicationController
 
   # GET /venues
   def index
-    venues = Venue.order(:name).all
+    venues = Rails.cache.fetch('venues:all') do
+      v = Venue.order(:name).all.to_a
+      VenueSerializer.render(v)
+    end
 
-    render json: VenueSerializer.render(venues)
+    render json: venues
   end
 
   # GET /venues/1

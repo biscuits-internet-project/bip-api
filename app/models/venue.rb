@@ -10,6 +10,13 @@ class Venue < ApplicationRecord
   scope :city, -> (city, state) { where(city: city, state: state) }
   scope :state, -> (state) { where(state: state) }
 
+  after_save    :expire_venue_all_cache
+  after_destroy :expire_venue_all_cache
+
+  def expire_venue_all_cache
+    Rails.cache.delete('venues:all')
+  end
+
   def slug_candidates
     [
       :name,

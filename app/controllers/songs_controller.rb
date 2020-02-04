@@ -5,7 +5,10 @@ class SongsController < ApplicationController
 
   # GET /songs
   def index
-    songs = Rails.cache.fetch('Song.all') { SongSerializer.render(Song.includes(:author).order(:title).all.to_a) }
+    songs = Rails.cache.fetch('songs:all') do
+      s = Song.includes(:author).order(:title).all.to_a
+      SongSerializer.render(s)
+    end
 
     render json: songs
   end

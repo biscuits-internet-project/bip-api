@@ -15,7 +15,7 @@ class Song < ApplicationRecord
   after_destroy :expire_song_all_cache
 
   def expire_song_all_cache
-    Rails.cache.delete('Song.all')
+    Rails.cache.delete('songs:all')
   end
 
   def last_time_played
