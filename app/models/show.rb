@@ -7,6 +7,7 @@ class Show < ApplicationRecord
   belongs_to :venue
   belongs_to :band
   has_many :tracks, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
 
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true

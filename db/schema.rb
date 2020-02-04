@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_02_204419) do
+ActiveRecord::Schema.define(version: 2020_02_04_045507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -89,6 +89,17 @@ ActiveRecord::Schema.define(version: 2020_02_02_204419) do
     t.integer "showorder"
     t.text "reviews"
     t.string "archiveorg", limit: 300
+  end
+
+  create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "likeable_id", null: false
+    t.string "likeable_type", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -184,6 +195,7 @@ ActiveRecord::Schema.define(version: 2020_02_02_204419) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "tracks"
+  add_foreign_key "likes", "users"
   add_foreign_key "shows", "bands"
   add_foreign_key "shows", "venues"
   add_foreign_key "songs", "authors"
