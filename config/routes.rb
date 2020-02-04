@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :songs
     resources :users
     resources :authors
+    resources :likes, only: [:create, :destroy]
 
     get '/tracks/songs/:song_id', to: 'tracks#index'
     post '/auth/login', to: 'authentications#login'
