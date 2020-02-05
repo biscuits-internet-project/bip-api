@@ -9,6 +9,8 @@ class LikesController < ApplicationController
     else
       render json: { errors: like.errors }, status: :unprocessable_entity
     end
+  rescue ActiveRecord::RecordNotUnique
+    render :ok
   end
 
   # DELETE /:resource_type/:resource_id/likes
