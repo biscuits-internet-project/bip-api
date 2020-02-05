@@ -5,12 +5,20 @@ Rails.application.routes.draw do
     root to: 'health#index'
 
     resources :tracks
-    resources :shows
+    resources :shows do
+      post :attend, on: :member
+      post :unattend, on: :member
+    end
     resources :bands
     resources :venues
     resources :songs
     resources :users
     resources :authors
+
+    scope path: '/:resource_type/:resource_id', shallow_path: "" do
+      post :like, to: 'likes#create'
+      post :unlike, to: 'likes#destroy'
+    end
 
     get '/tracks/songs/:song_id', to: 'tracks#index'
     post '/auth/login', to: 'authentications#login'

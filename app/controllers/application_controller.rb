@@ -18,4 +18,12 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def resource
+    @_resource ||= find_model(params[:resource_type], params[:resource_id])
+  end
+
+  def find_model(type, id)
+    type.singularize.camelize.constantize.find(id)
+  end
+
 end

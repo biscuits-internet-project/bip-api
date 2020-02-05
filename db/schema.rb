@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_04_045507) do
+ActiveRecord::Schema.define(version: 2020_02_04_231201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,16 @@ ActiveRecord::Schema.define(version: 2020_02_04_045507) do
     t.text "desc"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "attendances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "show_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["show_id"], name: "index_attendances_on_show_id"
+    t.index ["user_id", "show_id"], name: "index_attendances_on_user_id_and_show_id", unique: true
+    t.index ["user_id"], name: "index_attendances_on_user_id"
   end
 
   create_table "authors", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -121,6 +131,8 @@ ActiveRecord::Schema.define(version: 2020_02_04_045507) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.index ["likes_count"], name: "index_shows_on_likes_count"
     t.index ["slug"], name: "index_shows_on_slug", unique: true
   end
 
@@ -148,6 +160,8 @@ ActiveRecord::Schema.define(version: 2020_02_04_045507) do
     t.string "segue"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.index ["likes_count"], name: "index_tracks_on_likes_count"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -195,6 +209,8 @@ ActiveRecord::Schema.define(version: 2020_02_04_045507) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "tracks"
+  add_foreign_key "attendances", "shows"
+  add_foreign_key "attendances", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "shows", "bands"
   add_foreign_key "shows", "venues"

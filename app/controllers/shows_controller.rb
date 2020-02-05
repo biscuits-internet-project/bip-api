@@ -1,12 +1,12 @@
 class ShowsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
   before_action :authorize_admin, only: [:create, :update, :destroy]
-  before_action :set_show, only: [:show, :update, :destroy]
+  before_action :set_show, only: [:show, :update, :destroy, :attend, :unattend]
 
   # GET /shows
   def index
     shows = Show.includes(:venue, tracks: [:annotations, :song])
-    
+
     if params[:year].present?
       shows = shows.by_year(params[:year].to_i).order(:date)
     end
@@ -59,6 +59,27 @@ class ShowsController < ApplicationController
   def destroy
     @show.destroy
   end
+
+  # POST /shows/1/attend
+  def attend
+    attendance = Attendance.new(show: @show, user: current_user)
+
+    if attendance.save
+      render head: :ok
+    else
+      render json: attendance.errors, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotUnique
+    render :ok
+  end
+
+  # POST /shows/1/unattend
+  def unattend
+    attendances = Attendance.where(show: @show, user: current_user)
+    attendances.each(&:destroy)
+    render head: :ok
+  end
+
 
   private
     def set_show

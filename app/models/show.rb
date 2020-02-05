@@ -1,5 +1,6 @@
 class Show < ApplicationRecord
   extend FriendlyId
+  include Likeable
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders]
 
   delegate :name, :city, :state, to: :venue, prefix: 'venue', allow_nil: true
@@ -7,8 +8,6 @@ class Show < ApplicationRecord
   belongs_to :venue
   belongs_to :band
   has_many :tracks, dependent: :destroy
-  has_many :likes, as: :likeable, dependent: :destroy
-
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
 
