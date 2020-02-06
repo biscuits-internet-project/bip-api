@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_003115) do
+ActiveRecord::Schema.define(version: 2020_02_06_052817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 2020_02_06_003115) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "likes_count", default: 0, null: false
     t.string "youtube_id"
+    t.string "relisten_url"
     t.index ["likes_count"], name: "index_shows_on_likes_count"
     t.index ["slug"], name: "index_shows_on_slug", unique: true
   end
