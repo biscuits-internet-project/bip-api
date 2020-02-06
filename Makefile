@@ -26,6 +26,9 @@ console:
 bash:
 	docker-compose run web bash 
 
+rake:
+	docker-compose run web rake $(cmd)
+
 clean:
 	rm -rf ./tmp
 	rm -rf ./vendor

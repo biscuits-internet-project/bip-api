@@ -17,6 +17,7 @@ gem 'rolify'
 gem 'honeybadger', '~> 4.0'
 gem 'aws-sdk-s3'
 gem 'dalli'
+gem 'httparty'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
