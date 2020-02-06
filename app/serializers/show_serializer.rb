@@ -1,7 +1,7 @@
 class ShowSerializer < Blueprinter::Base
   identifier :id
 
-  fields :id, :slug, :venue_id, :notes, :likes_count
+  fields :id, :slug, :venue_id, :notes, :likes_count, :youtube_id
   field :date, datetime_format: "%Y-%m-%d"
 
   view :setlist do
