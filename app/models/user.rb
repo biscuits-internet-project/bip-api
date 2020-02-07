@@ -12,4 +12,8 @@ class User < ApplicationRecord
   def confirmed?
     confirmed_at.present?
   end
+
+  def admin?
+    self.has_role?(:admin)
+  end
 end

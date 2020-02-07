@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     scope path: '/:resource_type/:resource_id', shallow_path: "" do
       post :like, to: 'likes#create'
       post :unlike, to: 'likes#destroy'
+
+      resources :reviews, shallow: true
     end
 
     get '/tracks/songs/:song_id', to: 'tracks#index'

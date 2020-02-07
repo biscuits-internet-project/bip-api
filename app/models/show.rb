@@ -1,6 +1,8 @@
 class Show < ApplicationRecord
   extend FriendlyId
   include Likeable
+  include Reviewable
+
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders]
 
   delegate :name, :city, :state, to: :venue, prefix: 'venue', allow_nil: true
