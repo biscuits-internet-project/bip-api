@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_052817) do
+ActiveRecord::Schema.define(version: 2020_02_06_224452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -110,6 +110,19 @@ ActiveRecord::Schema.define(version: 2020_02_06_052817) do
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
     t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "reviewable_id", null: false
+    t.string "reviewable_type", null: false
+    t.text "content", null: false
+    t.string "status", default: "draft", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable_type_and_reviewable_id"
+    t.index ["user_id", "reviewable_type", "reviewable_id"], name: "index_reviews_on_user_id_and_reviewable_type_and_reviewable_id", unique: true
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -214,6 +227,7 @@ ActiveRecord::Schema.define(version: 2020_02_06_052817) do
   add_foreign_key "attendances", "shows"
   add_foreign_key "attendances", "users"
   add_foreign_key "likes", "users"
+  add_foreign_key "reviews", "users"
   add_foreign_key "shows", "bands"
   add_foreign_key "shows", "venues"
   add_foreign_key "songs", "authors"

@@ -13,9 +13,13 @@ class ApplicationController < ActionController::API
   end
 
   def authorize_admin
-    if @current_user.nil? || !@current_user.has_role?(:admin)
-      render json: { errors: 'User lacks permission to take that action' }, status: :forbidden
+    if @current_user.nil? || !@current_user.admin?
+      render_not_authorized
     end
+  end
+
+  def render_not_authorized
+      render json: { errors: like.errors }, status: :unprocessable_entity
   end
 
   def resource

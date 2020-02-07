@@ -1,8 +1,8 @@
 class TrackSerializer < Blueprinter::Base
-  #identifier :id
+  identifier :id
 
-  view :versions do 
-    fields :set, :position 
+  view :versions do
+    fields :set, :position
     field :segue, default: ""
     association :venue, blueprint: VenueSerializer
     association :show, blueprint: ShowSerializer
