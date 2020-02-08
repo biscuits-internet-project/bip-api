@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_08_045024) do
+ActiveRecord::Schema.define(version: 2020_02_08_052721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 2020_02_08_045024) do
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.index ["likes_count"], name: "index_reviews_on_likes_count"
     t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable_type_and_reviewable_id"
     t.index ["user_id", "reviewable_type", "reviewable_id"], name: "index_reviews_on_user_id_and_reviewable_type_and_reviewable_id", unique: true
     t.index ["user_id"], name: "index_reviews_on_user_id"
