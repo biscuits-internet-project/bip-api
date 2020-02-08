@@ -6,7 +6,7 @@ class Song < ApplicationRecord
   validates :slug, uniqueness: true
 
   belongs_to :author
-  has_many :tracks
+  has_many :tracks, dependent: :destroy
   has_many :shows, through: :tracks
 
   delegate :name, to: :author, prefix: 'author', allow_nil: true
