@@ -1,7 +1,7 @@
 class TracksController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
-  before_action :authorize_admin, only: [:create, :update, :destroy]
-  before_action :set_track, only: [:show, :update, :destroy]
+  before_action :authorize_admin, only: [:update]
+  before_action :set_track, only: [:show, :update]
 
   # GET /tracks/song/:id
   def index
@@ -13,42 +13,24 @@ class TracksController < ApplicationController
 
   # GET /tracks/1
   def show
-    render json: @track
-  end
-
-  # POST /tracks
-  def create
-    @track = Track.new(track_params)
-
-    if @track.save
-      render json: @track, status: :created, location: @track
-    else
-      render json: @track.errors, status: :unprocessable_entity
-    end
+    render json: TrackSerializer.render(@track)
   end
 
   # PATCH/PUT /tracks/1
   def update
     if @track.update(track_params)
-      render json: @track
+      render json: TrackSerializer.render(@track, view: :versions)
     else
       render json: @track.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /tracks/1
-  def destroy
-    @track.destroy
-  end
-
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_track
       @track = Track.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def track_params
-      params.fetch(:track, {})
+      params.permit(:set, :segue, :position, :note)
     end
 end

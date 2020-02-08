@@ -1,9 +1,10 @@
 class TrackSerializer < Blueprinter::Base
   identifier :id
 
+  fields :set, :position, :note, :slug, :song_id
+  field :segue, default: ""
+
   view :versions do
-    fields :set, :position
-    field :segue, default: ""
     association :venue, blueprint: VenueSerializer
     association :show, blueprint: ShowSerializer
     field :annotations do |track, options|
@@ -12,8 +13,7 @@ class TrackSerializer < Blueprinter::Base
   end
 
   view :setlist do
-    fields :set, :position, :song_id, :song_title, :song_slug
-    field :segue, default: ""
+    fields :song_title, :song_slug
     field :annotations do |track, options|
       track.annotations.map(&:desc)
     end

@@ -14,4 +14,8 @@ namespace :slugs do
   task :shows => [:environment] do
     Show.find_each(&:save)
   end
+
+  task :tracks => [:environment] do
+    Track.find_each(&:save)
+  end
 end

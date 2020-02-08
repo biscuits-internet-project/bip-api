@@ -26,8 +26,6 @@ class Show < ApplicationRecord
     where("date >= ? and date <= ?", boy, eoy)
   end
 
-  private
-
   def date_for_url
     if date
       date.stamp('2015 01 29')

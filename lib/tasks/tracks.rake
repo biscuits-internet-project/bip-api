@@ -66,7 +66,7 @@ namespace :tracks do
         tracks << track
       end
     end
-  
+
     tracks.each_with_index do |track, i|
       begin
         track.position = i + 1
