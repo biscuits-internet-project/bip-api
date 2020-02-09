@@ -1,7 +1,7 @@
 class SongsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
   before_action :authorize_admin, only: [:create, :update, :destroy]
-  before_action :set_song, only: [:show, :update, :destroy]
+  before_action :set_song, only: [:update, :destroy]
 
   # GET /songs
   def index
@@ -15,7 +15,12 @@ class SongsController < ApplicationController
 
   # GET /songs/1
   def show
-    render json: SongSerializer.render(@song, view: :details)
+    song = Rails.cache.fetch("songs:#{params[:id]}") do
+      s = Song.find(params[:id])
+      s.generate_history_links
+      SongSerializer.render(s, view: :details)
+    end
+    render json: song
   end
 
   # POST /songs
