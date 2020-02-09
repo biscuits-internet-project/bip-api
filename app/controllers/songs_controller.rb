@@ -15,10 +15,16 @@ class SongsController < ApplicationController
 
   # GET /songs/1
   def show
-    song = Rails.cache.fetch("songs:#{params[:id]}") do
-      s = Song.find(params[:id])
-      s.generate_history_links
-      SongSerializer.render(s, view: :details)
+    song = begin
+      if params[:edit]
+        SongSerializer.render(Song.find(params[:id]), view: :details)
+      else
+        Rails.cache.fetch("songs:#{params[:id]}") do
+          s = Song.find(params[:id])
+          s.generate_history_links
+          SongSerializer.render(s, view: :details)
+        end
+      end
     end
     render json: song
   end
