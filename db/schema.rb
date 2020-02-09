@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_08_211010) do
+ActiveRecord::Schema.define(version: 2020_02_09_001646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -188,6 +188,8 @@ ActiveRecord::Schema.define(version: 2020_02_08_211010) do
     t.boolean "cover", default: false
     t.uuid "author_id"
     t.text "legacy_author"
+    t.text "history"
+    t.text "featured_lyric"
     t.index ["slug"], name: "index_songs_on_slug", unique: true
   end
 
