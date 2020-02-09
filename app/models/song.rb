@@ -11,15 +11,13 @@ class Song < ApplicationRecord
 
   delegate :name, to: :author, prefix: 'author', allow_nil: true
 
-  after_save    :expire_song_all_cache, :expire_song_cache
-  after_destroy :expire_song_all_cache, :expire_song_cache
+  after_save    :expire_song_caches
+  after_destroy :expire_song_caches
 
-  def expire_song_all_cache
+  def expire_song_caches
     Rails.cache.delete('songs:all')
-  end
-
-  def expire_song_all_cache
     Rails.cache.delete("songs:#{slug}")
+    Rails.cache.delete("songs:#{id}")
   end
 
   def last_time_played
