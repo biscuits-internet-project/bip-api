@@ -2,6 +2,7 @@ class Track < ApplicationRecord
   extend FriendlyId
   include Likeable
   include Reviewable
+  acts_as_taggable_on :track_tags
 
   friendly_id :build_slug, use: [:sequentially_slugged, :finders]
 
