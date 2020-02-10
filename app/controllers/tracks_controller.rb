@@ -18,6 +18,10 @@ class TracksController < ApplicationController
 
   # PATCH/PUT /tracks/1
   def update
+    if params[:track_tag_list]
+      @track.track_tag_list = params[:track_tag_list]
+      @track.save
+    end
     if @track.update(track_params)
       render json: TrackSerializer.render(@track, view: :versions)
     else
@@ -31,6 +35,6 @@ class TracksController < ApplicationController
     end
 
     def track_params
-      params.permit(:set, :segue, :position, :note)
+      params.except(:track_tag_list).permit(:set, :segue, :position, :note)
     end
 end

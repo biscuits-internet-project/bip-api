@@ -5,6 +5,7 @@ class TrackSerializer < Blueprinter::Base
   field :segue, default: ""
 
   view :versions do
+    field :track_tag_list
     association :venue, blueprint: VenueSerializer
     association :show, blueprint: ShowSerializer
     field :annotations do |track, options|
