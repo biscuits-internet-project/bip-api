@@ -6,7 +6,7 @@ class TracksController < ApplicationController
   # GET /tracks/song/:id
   def index
     song = Song.find(params["song_id"])
-    tracks = Track.includes(:annotations, show: :venue).where(song_id: song.id).order('shows.date').to_a
+    tracks = Track.includes(:track_tag_taggings, :track_tags, :annotations, :venue, :show).where(song_id: song.id).order('shows.date').to_a
 
     render json: TrackSerializer.render(tracks, view: :versions)
   end
