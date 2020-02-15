@@ -1,7 +1,7 @@
 class ShowsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
   before_action :authorize_admin, only: [:create, :update, :destroy]
-  before_action :set_show, only: [:show, :update, :destroy, :attend, :unattend]
+  before_action :set_show, only: [:update, :destroy, :attend, :unattend]
 
   # GET /shows
   def index
@@ -33,7 +33,8 @@ class ShowsController < ApplicationController
 
   # GET /shows/1
   def show
-    render json: ShowSerializer.render(@show, view: :setlist)
+    show = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).find(params[:id])
+    render json: ShowSerializer.render(show, view: :setlist)
   end
 
   # POST /shows
