@@ -5,7 +5,7 @@ class ShowsController < ApplicationController
 
   # GET /shows
   def index
-    shows = Show.includes(:venue, tracks: [:annotations, :song])
+    shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
 
     if params[:year].present?
       shows = shows.by_year(params[:year].to_i).order(:date)
@@ -17,7 +17,8 @@ class ShowsController < ApplicationController
     end
 
     if params[:last].present?
-      shows = shows.order("date desc").take(params[:last].to_i)
+      ids = Show.order("date desc").limit(params[:last].to_i)
+      shows = shows.where(id: ids).to_a
     end
 
     if params[:city].present? && params[:state].present?
@@ -25,6 +26,7 @@ class ShowsController < ApplicationController
     elsif params[:state].present?
       shows = shows.joins(:venue).merge(Venue.state(params[:state]))
     end
+
 
     render json: ShowSerializer.render(shows, view: :setlist)
   end

@@ -6,6 +6,8 @@ class Track < ApplicationRecord
 
   friendly_id :build_slug, use: [:sequentially_slugged, :finders]
 
+  scope :setlist, -> { order("tracks.set in ('E1', 'E2'), tracks.set, tracks.position") }
+
   belongs_to :song
   belongs_to :show
   has_many :annotations, dependent: :destroy
