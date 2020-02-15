@@ -19,6 +19,7 @@ class ShowsController < ApplicationController
     if params[:last].present?
       ids = Show.order("date desc").limit(params[:last].to_i)
       shows = shows.where(id: ids).to_a
+      shows = shows.sort {|a,b| b.date <=> a.date }
     end
 
     if params[:city].present? && params[:state].present?
