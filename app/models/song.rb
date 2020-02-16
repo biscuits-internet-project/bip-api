@@ -11,7 +11,7 @@ class Song < ApplicationRecord
 
   delegate :name, to: :author, prefix: 'author', allow_nil: true
 
-  after_save    :expire_song_caches
+  after_save :expire_song_caches
   after_destroy :expire_song_caches
 
   def expire_song_caches
@@ -20,12 +20,12 @@ class Song < ApplicationRecord
     Rails.cache.delete("songs:#{id}")
   end
 
-  def last_time_played
-    shows.order("date asc").last&.date
+  def last_played_show
+    shows.order("date asc").last
   end
 
-  def first_time_played
-    shows.order("date asc").first&.date
+  def first_played_show
+    shows.order("date asc").first
   end
 
   def times_played

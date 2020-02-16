@@ -3,9 +3,9 @@ class ShowSerializer < Blueprinter::Base
 
   fields :id, :slug, :venue_id, :notes, :likes_count, :youtube_id, :relisten_url
   field :date, datetime_format: "%Y-%m-%d"
+  association :venue, blueprint: VenueSerializer
 
   view :setlist do
-    association :venue, blueprint: VenueSerializer
     association :tracks, blueprint: TrackSerializer, view: :setlist
   end
 end

@@ -28,7 +28,6 @@ class ShowsController < ApplicationController
       shows = shows.joins(:venue).merge(Venue.state(params[:state]))
     end
 
-
     render json: ShowSerializer.render(shows, view: :setlist)
   end
 
