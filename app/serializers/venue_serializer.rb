@@ -5,7 +5,7 @@ class VenueSerializer < Blueprinter::Base
 
   view :details do
     field :times_played
-    field :first_time_played, datetime_format: "%Y-%m-%d"
-    field :last_time_played, datetime_format: "%Y-%m-%d"
+    association :first_played_show, blueprint: ShowSerializer
+    association :last_played_show, blueprint: ShowSerializer
   end
 end

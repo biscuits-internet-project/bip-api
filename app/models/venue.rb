@@ -10,7 +10,7 @@ class Venue < ApplicationRecord
   scope :city, -> (city, state) { where(city: city, state: state) }
   scope :state, -> (state) { where(state: state) }
 
-  after_save    :expire_venue_all_cache
+  after_save :expire_venue_all_cache
   after_destroy :expire_venue_all_cache
 
   def expire_venue_all_cache
@@ -25,12 +25,12 @@ class Venue < ApplicationRecord
     ]
   end
 
-  def last_time_played
-    shows.order("date asc").last&.date
+  def last_played_show
+    shows.order("date asc").last
   end
 
-  def first_time_played
-    shows.order("date asc").first&.date
+  def first_played_show
+    shows.order("date asc").first
   end
 
   def times_played
