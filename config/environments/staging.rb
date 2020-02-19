@@ -3,6 +3,7 @@ Rails.application.configure do
 
   config.bip_ui_url = "https://stg-ui.discobiscuits.net"
   config.bip_api_url = "https://stg-api.discobiscuits.net/api"
+  Rails.application.routes.default_url_options[:host] = "stg-api.discobiscuits.net"
 
   # Code is not reloaded between requests.
   config.cache_classes = true
