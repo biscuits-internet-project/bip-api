@@ -1,6 +1,7 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :notes, :song_titles]
+  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :venue_country,
+   :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten]
 
   extend FriendlyId
   include Likeable
@@ -8,7 +9,7 @@ class Show < ApplicationRecord
 
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders]
 
-  delegate :name, :city, :state, to: :venue, prefix: 'venue', allow_nil: true
+  delegate :name, :city, :state, :state_name, :country, to: :venue, prefix: 'venue', allow_nil: true
 
   belongs_to :venue, touch: true
   belongs_to :band
@@ -25,6 +26,18 @@ class Show < ApplicationRecord
 
   def song_titles
     tracks.includes(:song).map { |t| t.song.title }.uniq.join(" ")
+  end
+
+  def has_photos
+    return "photos" if show_photos.exists?
+  end
+
+  def has_youtube
+    return "youtube" if youtube_id.present?
+  end
+
+  def has_relisten
+    return "relisten" if relisten_url.present?
   end
 
   def date_month
