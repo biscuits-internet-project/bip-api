@@ -1,6 +1,6 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:date, :date_month, :venue_name, :venue_city]
+  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :notes]
 
   extend FriendlyId
   include Likeable
