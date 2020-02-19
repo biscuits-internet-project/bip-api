@@ -10,6 +10,7 @@ class Venue < ApplicationRecord
   scope :city, -> (city, state) { where(city: city, state: state) }
   scope :state, -> (state) { where(state: state) }
 
+  after_touch :save
   after_save :update_times_played, :expire_venue_all_cache
   after_destroy :expire_venue_all_cache
 

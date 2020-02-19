@@ -1,7 +1,7 @@
 class SongSerializer < Blueprinter::Base
   identifier :id
 
-  fields :id, :title, :slug, :cover, :author_name, :author_id, :times_played
+  fields :id, :title, :slug, :cover, :author_name, :author_id, :times_played, :date_last_played
 
   view :details do
     fields :history, :featured_lyric, :notes, :lyrics, :tabs
