@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_10_010222) do
+ActiveRecord::Schema.define(version: 2020_02_19_043927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_010222) do
     t.text "legacy_author"
     t.text "history"
     t.text "featured_lyric"
+    t.integer "times_played", default: 0, null: false
     t.index ["slug"], name: "index_songs_on_slug", unique: true
   end
 
@@ -277,6 +278,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_010222) do
     t.integer "legacy_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "times_played", default: 0, null: false
     t.index ["slug"], name: "index_venues_on_slug", unique: true
   end
 

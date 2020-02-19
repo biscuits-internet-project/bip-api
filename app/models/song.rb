@@ -11,7 +11,7 @@ class Song < ApplicationRecord
 
   delegate :name, to: :author, prefix: 'author', allow_nil: true
 
-  after_save :expire_song_caches
+  after_save :update_times_played, :expire_song_caches
   after_destroy :expire_song_caches
 
   def expire_song_caches
@@ -28,11 +28,12 @@ class Song < ApplicationRecord
     shows.order("date asc").first
   end
 
-  def times_played
-    shows.uniq.count
+  def update_times_played
+    update_column(:times_played, shows.uniq.count)
   end
 
   def generate_history_links
+
     return if history.blank?
     replacements = {}
 

@@ -7,11 +7,13 @@ class Show < ApplicationRecord
 
   delegate :name, :city, :state, to: :venue, prefix: 'venue', allow_nil: true
 
-  belongs_to :venue
+  belongs_to :venue, touch: true
   belongs_to :band
   has_many :tracks, dependent: :destroy
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
+
+  after_save :update_venue_times_played
 
   def slug_candidates
     [

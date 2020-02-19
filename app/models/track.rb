@@ -8,7 +8,7 @@ class Track < ApplicationRecord
 
   scope :setlist, -> { order("tracks.set in ('E1', 'E2'), tracks.set, tracks.position") }
 
-  belongs_to :song
+  belongs_to :song, touch: true
   belongs_to :show
   has_many :annotations, dependent: :destroy
   has_one :venue, through: :show
