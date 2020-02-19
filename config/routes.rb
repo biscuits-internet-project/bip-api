@@ -5,9 +5,10 @@ Rails.application.routes.draw do
     root to: 'health#index'
 
     resources :tracks
-    resources :shows do
+    resources :shows, shallow_path: "" do
       post :attend, on: :member
       post :unattend, on: :member
+      get :photos, on: :member, to: "show_photos#index"
     end
     resources :bands
     resources :venues
