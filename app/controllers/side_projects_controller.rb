@@ -3,7 +3,7 @@ class SideProjectsController < ApplicationController
 
   # GET /side_projects
   def index
-    side_projects = SideProject.all
+    side_projects = SideProject.all.order(:name)
 
     render json: SideProjectSerializer.render(side_projects)
   end
