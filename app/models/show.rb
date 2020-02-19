@@ -1,6 +1,6 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:date, :venue_name, :venue_city]
+  multisearchable :against => [:date, :date_month, :venue_name, :venue_city]
 
   extend FriendlyId
   include Likeable
@@ -21,6 +21,10 @@ class Show < ApplicationRecord
     [
       [:date_for_url, :venue_name, :venue_city, :venue_state]
     ]
+  end
+
+  def date_month
+    date.strftime("%B")
   end
 
   def self.by_year(year)
