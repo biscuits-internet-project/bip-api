@@ -15,13 +15,8 @@ namespace :photos do
     records.each do |record|
       show = shows.find { |s| s.legacy_id == record["showid"] }
 
-      doc = begin
-        Nokogiri::XML(open(record["url"]))
-      rescue
-        next
-      end
-
       begin
+        doc = Nokogiri::XML(open(record["url"]))
         hash = Hash.from_xml(doc.to_s)
       rescue
         failed << record["id"]
@@ -29,24 +24,21 @@ namespace :photos do
       end
 
       hash["feed"]["entry"].each do |entry|
+        label = entry["author"]["uri"]
 
-        begin
-          label = entry["author"]["uri"]
+        entry["link"].each do |item|
+          if item["type"] == "image/jpeg"
+            url = item["href"]
+            filename = File.basename(URI.parse(url).path)
+            file = open(url)
 
-          entry["link"].each do |item|
-            if item["type"] == "image/jpeg"
-              url = item["href"]
-              filename = File.basename(URI.parse(url).path)
-              file = open(url)
-
-              photo = ShowPhoto.create(show: show, user: user, label: label, source: url)
-              photo.image.attach(io: file, filename: filename)
-            end
+            photo = ShowPhoto.create(show: show, user: user, label: label, source: url)
+            photo.image.attach(io: file, filename: filename)
           end
-        rescue
-          failed << record["id"]
-          next
         end
+      rescue
+        failed << record["id"]
+        next
       end
 
     end
@@ -65,14 +57,8 @@ namespace :photos do
     records.each do |record|
       show = shows.find { |s| s.legacy_id == record["showid"] }
 
-      doc = begin
-        Nokogiri::XML(open(record["url"]))
-      rescue OpenURI::HTTPError
-        failed << record["id"]
-        next
-      end
-
-      begin REXML::UndefinedNamespaceException
+      begin
+        doc = Nokogiri::XML(open(record["url"]))
         hash = Hash.from_xml(doc.to_s)
       rescue
         failed << record["id"]
@@ -80,14 +66,17 @@ namespace :photos do
       end
 
       source = hash["rss"]["channel"]["link"]
-
       hash["rss"]["channel"]["item"].each do |item|
+
         url = item["enclosure"]["url"]
         label = item["creator"]
         filename = File.basename(URI.parse(url).path)
         file = open(url)
         photo = ShowPhoto.create(show: show, user: user, label: label, source: source)
         photo.image.attach(io: file, filename: filename)
+      rescue
+        failed << record["id"]
+        next
       end
     end
 
