@@ -28,4 +28,3 @@ class ShowPhoto < ApplicationRecord
     image.metadata["width"]
   end
 end
-

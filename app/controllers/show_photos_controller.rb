@@ -4,7 +4,7 @@ class ShowPhotosController < ApplicationController
   # GET /shows/:id/:photos
   def index
     show = Show.find(params[:id])
-    photos = show.show_photos
+    photos = show.show_photos.includes(image_attachment: :blob)
 
     render json: ShowPhotoSerializer.render(photos)
   end
