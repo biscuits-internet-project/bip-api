@@ -83,4 +83,41 @@ namespace :photos do
     puts '===== failed ======'
     puts failed.inspect
   end
+
+  task :files => [:environment] do
+
+    shows = Show.all.to_a
+    user = User.first
+
+    base_dir = pwd + "/lib/photos"
+    skip = [".", "..", ".DS_Store"]
+
+    Dir.open(pwd + "/lib/photos").each do |year|
+      next if skip.include?(year)
+      puts year
+      Dir.open("#{base_dir}/#{year}").each do |month|
+        next if skip.include?(month)
+        puts month
+        Dir.open("#{base_dir}/#{year}/#{month}").each do |day|
+          next if skip.include?(day)
+          puts day
+          date = Date.new(year.to_i, month.to_i, day.to_i)
+          show = shows.find { |s| s.date == date }
+          puts show
+
+          Dir.open("#{base_dir}/#{year}/#{month}/#{day}").each_with_index do |f, i|
+            next if skip.include?(f)
+
+            extname = File.extname("#{base_dir}/#{year}/#{month}/#{day}/#{f}")
+            filename = "#{year}-#{month}-#{day}-#{i}#{extname}"
+            f = File.open("#{base_dir}/#{year}/#{month}/#{day}/#{f}")
+
+            photo = ShowPhoto.create(show: show, user: user, label: "dbnet", source: "dbnet")
+            photo.image.attach(io: f, filename: filename)
+          end
+        end
+      end
+    end
+
+  end
 end
