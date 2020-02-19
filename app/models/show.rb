@@ -1,4 +1,7 @@
 class Show < ApplicationRecord
+  include PgSearch::Model
+  multisearchable :against => [:date, :venue_name, :venue_city]
+
   extend FriendlyId
   include Likeable
   include Reviewable
