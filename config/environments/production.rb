@@ -1,8 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.bip_ui_url = "http://beta.discobiscuits.net"
-  config.bip_api_url = "http://api.discobiscuits.net/api"
+  config.bip_ui_url = "https://beta.discobiscuits.net"
+  config.bip_api_url = "https://api.discobiscuits.net/api"
+  Rails.application.routes.default_url_options[:host] = "api.discobiscuits.net"
 
   config.cache_store = :mem_cache_store,
   (ENV["MEMCACHEDCLOUD_SERVERS"] || "").split(","),
