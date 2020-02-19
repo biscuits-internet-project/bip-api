@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_01_154735) do
+ActiveRecord::Schema.define(version: 2020_03_02_050719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -186,9 +186,17 @@ ActiveRecord::Schema.define(version: 2020_03_01_154735) do
     t.index ["user_id"], name: "index_show_photos_on_user_id"
   end
 
+  create_table "show_youtubes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "show_id", null: false
+    t.string "video_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["show_id"], name: "index_show_youtubes_on_show_id"
+  end
+
   create_table "shows", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "slug", null: false
-    t.datetime "date"
+    t.date "date", null: false
     t.uuid "venue_id"
     t.uuid "band_id"
     t.text "notes"
@@ -196,7 +204,6 @@ ActiveRecord::Schema.define(version: 2020_03_01_154735) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "likes_count", default: 0, null: false
-    t.string "youtube_id"
     t.string "relisten_url"
     t.index ["likes_count"], name: "index_shows_on_likes_count"
     t.index ["slug"], name: "index_shows_on_slug", unique: true
@@ -213,8 +220,8 @@ ActiveRecord::Schema.define(version: 2020_03_01_154735) do
     t.string "mem5"
     t.string "mem6"
     t.string "mem7"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
   end
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -326,6 +333,11 @@ ActiveRecord::Schema.define(version: 2020_03_01_154735) do
     t.index ["slug"], name: "index_venues_on_slug", unique: true
   end
 
+  create_table "youtubes", id: false, force: :cascade do |t|
+    t.date "date"
+    t.text "url"
+  end
+
   add_foreign_key "annotations", "tracks"
   add_foreign_key "attendances", "shows"
   add_foreign_key "attendances", "users"
@@ -333,6 +345,7 @@ ActiveRecord::Schema.define(version: 2020_03_01_154735) do
   add_foreign_key "reviews", "users"
   add_foreign_key "show_photos", "shows"
   add_foreign_key "show_photos", "users"
+  add_foreign_key "show_youtubes", "shows"
   add_foreign_key "shows", "bands"
   add_foreign_key "shows", "venues"
   add_foreign_key "songs", "authors"

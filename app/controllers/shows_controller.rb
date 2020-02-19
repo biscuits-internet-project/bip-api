@@ -9,11 +9,11 @@ class ShowsController < ApplicationController
 
     if params[:search].present?
       ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id).take(100)
-      shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
+      shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
       shows = shows.sort {|a,b| a.date <=> b.date }
     elsif params[:last].present?
       ids = Show.order("date desc").limit(params[:last].to_i)
-      shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
+      shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
       shows = shows.sort {|a,b| b.date <=> a.date }
     else
       if params[:year].present?
@@ -93,7 +93,7 @@ class ShowsController < ApplicationController
   private
 
     def base_shows
-      Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
+      Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist)
     end
 
     def set_show

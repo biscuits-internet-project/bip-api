@@ -15,6 +15,7 @@ class Show < ApplicationRecord
   belongs_to :band
   has_many :tracks, dependent: :destroy
   has_many :show_photos, dependent: :destroy
+  has_many :show_youtubes, dependent: :destroy
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
 
@@ -33,7 +34,7 @@ class Show < ApplicationRecord
   end
 
   def has_youtube
-    return "youtube" if youtube_id.present?
+    return "youtube" if show_youtubes.exists?
   end
 
   def has_relisten
