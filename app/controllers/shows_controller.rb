@@ -5,6 +5,8 @@ class ShowsController < ApplicationController
 
   # GET /shows
   def index
+    shows = []
+
     if params[:search].present?
       ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id)
       shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
@@ -14,21 +16,19 @@ class ShowsController < ApplicationController
       shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
       shows = shows.sort {|a,b| b.date <=> a.date }
     else
-      shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
-
       if params[:year].present?
-        shows = shows.by_year(params[:year].to_i)
+        shows = base_shows.by_year(params[:year].to_i)
       end
 
       if params[:venue].present?
         venue = Venue.find(params[:venue])
-        shows = shows.where(venue_id: venue.id)
+        shows = base_shows.where(venue_id: venue.id)
       end
 
       if params[:city].present? && params[:state].present?
-        shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
+        shows = base_shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
       elsif params[:state].present?
-        shows = shows.joins(:venue).merge(Venue.state(params[:state]))
+        shows = base_shows.joins(:venue).merge(Venue.state(params[:state]))
       end
 
       shows = shows.sort {|a,b| a.date <=> b.date }
@@ -91,6 +91,11 @@ class ShowsController < ApplicationController
 
 
   private
+
+    def base_shows
+      Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
+    end
+
     def set_show
       @show = Show.find(params[:id])
     end
