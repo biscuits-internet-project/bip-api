@@ -13,5 +13,12 @@ class ShowPhoto < ApplicationRecord
     rails_representation_url(image.variant(resize: "200x200").processed)
   end
 
+  def src_set
+    [
+      "#{url} #{image.metadata["width"]}w",
+      "#{thumb_url} 200w"
+    ]
+  end
+
 end
 
