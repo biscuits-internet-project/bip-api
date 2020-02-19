@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_29_210135) do
+ActiveRecord::Schema.define(version: 2020_03_01_154735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -200,6 +200,21 @@ ActiveRecord::Schema.define(version: 2020_02_29_210135) do
     t.string "relisten_url"
     t.index ["likes_count"], name: "index_shows_on_likes_count"
     t.index ["slug"], name: "index_shows_on_slug", unique: true
+  end
+
+  create_table "side_projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "dates"
+    t.text "notes"
+    t.string "mem1"
+    t.string "mem2"
+    t.string "mem3"
+    t.string "mem4"
+    t.string "mem5"
+    t.string "mem6"
+    t.string "mem7"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
