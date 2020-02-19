@@ -8,7 +8,7 @@ class ShowsController < ApplicationController
     shows = []
 
     if params[:search].present?
-      ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id)
+      ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id).take(50)
       shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
       shows = shows.sort {|a,b| a.date <=> b.date }
     elsif params[:last].present?

@@ -1,6 +1,6 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :notes]
+  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :notes, :song_titles]
 
   extend FriendlyId
   include Likeable
@@ -21,6 +21,10 @@ class Show < ApplicationRecord
     [
       [:date_for_url, :venue_name, :venue_city, :venue_state]
     ]
+  end
+
+  def song_titles
+    tracks.includes(:song).map { |t| t.song.title }.uniq.join(" ")
   end
 
   def date_month
