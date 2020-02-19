@@ -20,5 +20,12 @@ class ShowPhoto < ApplicationRecord
     ]
   end
 
+  def height
+    image.metadata["height"]
+  end
+
+  def width
+    image.metadata["width"]
+  end
 end
 
