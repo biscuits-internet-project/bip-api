@@ -5,27 +5,29 @@ class ShowsController < ApplicationController
 
   # GET /shows
   def index
-    shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
-
-    if params[:year].present?
-      shows = shows.by_year(params[:year].to_i).order(:date)
-    end
-
-    if params[:venue].present?
-      venue = Venue.find(params[:venue])
-      shows = shows.where(venue_id: venue.id).order(:date)
-    end
-
     if params[:last].present?
       ids = Show.order("date desc").limit(params[:last].to_i)
       shows = shows.where(id: ids).to_a
       shows = shows.sort {|a,b| b.date <=> a.date }
-    end
+    else
+      shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
 
-    if params[:city].present? && params[:state].present?
-      shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
-    elsif params[:state].present?
-      shows = shows.joins(:venue).merge(Venue.state(params[:state]))
+      if params[:year].present?
+        shows = shows.by_year(params[:year].to_i)
+      end
+
+      if params[:venue].present?
+        venue = Venue.find(params[:venue])
+        shows = shows.where(venue_id: venue.id)
+      end
+
+      if params[:city].present? && params[:state].present?
+        shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
+      elsif params[:state].present?
+        shows = shows.joins(:venue).merge(Venue.state(params[:state]))
+      end
+
+      shows = shows.sort {|a,b| a.date <=> b.date }
     end
 
     render json: ShowSerializer.render(shows, view: :setlist)
