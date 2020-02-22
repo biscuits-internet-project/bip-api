@@ -1,8 +1,19 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.bip_ui_url = "http://discobiscuits.net"
+  config.bip_ui_url = "http://beta.discobiscuits.net"
   config.bip_api_url = "http://api.discobiscuits.net/api"
+
+  config.cache_store = :mem_cache_store,
+  (ENV["MEMCACHEDCLOUD_SERVERS"] || "").split(","),
+  {
+    :username => ENV["MEMCACHEDCLOUD_USERNAME"],
+    :password => ENV["MEMCACHEDCLOUD_PASSWORD"],
+    :failover => true,
+    :socket_timeout => 1.5,
+    :socket_failure_delay => 0.2,
+    :down_retry_delay => 60
+  }
 
   # Code is not reloaded between requests.
   config.cache_classes = true
