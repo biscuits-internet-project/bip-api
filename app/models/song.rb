@@ -5,11 +5,11 @@ class Song < ApplicationRecord
   validates :title, :slug, presence: true
   validates :slug, uniqueness: true
 
-  belongs_to :author
+  #belongs_to :author
   has_many :tracks, dependent: :destroy
   has_many :shows, through: :tracks
 
-  delegate :name, to: :author, prefix: 'author', allow_nil: true
+  #delegate :name, to: :author, prefix: 'author', allow_nil: true
 
   after_save :update_times_played, :expire_song_caches
   after_destroy :expire_song_caches
