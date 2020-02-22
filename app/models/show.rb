@@ -13,8 +13,6 @@ class Show < ApplicationRecord
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
 
-  after_save :update_venue_times_played
-
   def slug_candidates
     [
       [:date_for_url, :venue_name, :venue_city, :venue_state]
