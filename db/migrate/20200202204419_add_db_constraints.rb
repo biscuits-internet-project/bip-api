@@ -3,6 +3,5 @@ class AddDbConstraints < ActiveRecord::Migration[6.0]
     add_index :bands, :slug, unique: true
     add_index :shows, :slug, unique: true
     add_index :songs, :slug, unique: true
-    add_index :venues, :slug, unique: true
   end
 end
