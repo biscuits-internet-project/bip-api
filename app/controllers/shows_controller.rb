@@ -7,7 +7,7 @@ class ShowsController < ApplicationController
   def index
     if params[:last].present?
       ids = Show.order("date desc").limit(params[:last].to_i)
-      shows = shows.where(id: ids).to_a
+      shows = Show.where(id: ids).to_a
       shows = shows.sort {|a,b| b.date <=> a.date }
     else
       shows = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist)
