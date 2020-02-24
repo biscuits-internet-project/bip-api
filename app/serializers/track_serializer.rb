@@ -1,7 +1,7 @@
 class TrackSerializer < Blueprinter::Base
   identifier :id
 
-  fields :set, :position, :note, :slug, :song_id
+  fields :set, :position, :note, :slug, :song_id, :all_timer
   field :segue, default: ""
 
   view :versions do
