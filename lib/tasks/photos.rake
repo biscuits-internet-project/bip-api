@@ -7,7 +7,7 @@ namespace :photos do
     shows = Show.all.to_a
     user = User.first
 
-    sql = "select * from galleries where type = 'flickr' limit 1"
+    sql = "select * from galleries where type = 'flickr';"
     records = ActiveRecord::Base.connection.execute(sql)
 
     records.each do |record|
@@ -31,15 +31,7 @@ namespace :photos do
           end
         end
       end
-
-
-      # if response.code == 200 && response[:error_code] != 404
-      #   link = "https://relisten.net/disco-biscuits/#{show.date.stamp('2009/01/16')}"
-      #   show.update_attribute(:relisten_url, link)
-      # end
-
     end
-
 
   end
 end
