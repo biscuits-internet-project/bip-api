@@ -10,6 +10,7 @@ class Show < ApplicationRecord
   belongs_to :venue, touch: true
   belongs_to :band
   has_many :tracks, dependent: :destroy
+  has_many :show_photos, dependent: :destroy
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
 

@@ -42,4 +42,5 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'solargraph'
   gem 'bullet'
+  gem 'awesome_print'
 end

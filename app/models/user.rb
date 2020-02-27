@@ -8,6 +8,7 @@ class User < ApplicationRecord
             if: -> { new_record? || !password.nil? }
 
   has_one_attached :avatar
+  has_many :show_photos
 
   def confirmed?
     confirmed_at.present?
