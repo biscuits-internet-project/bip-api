@@ -5,7 +5,7 @@ ruby '2.6.5'
 
 gem 'rails', '~> 6.0.0'
 gem 'pg'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 gem 'rack-cors'
 gem 'friendly_id'
 gem 'simple_command'
