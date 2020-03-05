@@ -6,9 +6,13 @@ class TracksController < ApplicationController
   # GET /tracks/song/:id
   def index
     song = Song.find(params["song_id"])
-    tracks = Track.includes(:track_tag_taggings, :track_tags, :annotations, :venue, :show).where(song_id: song.id).order('shows.date').to_a
 
-    render json: TrackSerializer.render(tracks, view: :versions)
+    tracks = Rails.cache.fetch("song:#{song.slug}:tracks") do
+      tracks = Track.includes(:track_tag_taggings, :track_tags, :annotations, :venue, :show).where(song_id: song.id).order('shows.date').to_a
+      TrackSerializer.render(tracks, view: :versions)
+    end
+
+    render json: tracks
   end
 
   # GET /tracks/1
