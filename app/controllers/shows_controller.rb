@@ -5,41 +5,38 @@ class ShowsController < ApplicationController
 
   # GET /shows
   def index
-    if params[:search].present?
-      ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id).take(100)
-      shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
-      shows = shows.sort {|a,b| a.date <=> b.date }
-      render json: ShowSerializer.render(shows, view: :setlist)
-    elsif params[:last].present?
-      ids = Show.order("date desc").limit(params[:last].to_i)
-      shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
-      shows = shows.sort {|a,b| b.date <=> a.date }
-      render json: ShowSerializer.render(shows, view: :setlist)
-    else
-      shows = Rails.cache.fetch('shows:all') do
-        s = base_shows.sort {|a,b| a.date <=> b.date }
-        ShowSerializer.render(s, view: :setlist)
+    s = Rails.cache.fetch("shows:#{params.to_s}") do
+      if params[:search].present?
+        ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id).take(100)
+        shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
+        shows = shows.sort {|a,b| a.date <=> b.date }
+      elsif params[:last].present?
+        ids = Show.order("date desc").limit(params[:last].to_i)
+        shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
+        shows = shows.sort {|a,b| b.date <=> a.date }
+      else
+        if params[:year].present?
+          shows = base_shows.by_year(params[:year].to_i)
+        end
+
+        if params[:venue].present?
+          venue = Venue.find(params[:venue])
+          shows = base_shows.where(venue_id: venue.id)
+        end
+
+        if params[:city].present? && params[:state].present?
+          shows = base_shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
+        elsif params[:state].present?
+          shows = base_shows.joins(:venue).merge(Venue.state(params[:state]))
+        end
+
+        shows = shows.sort {|a,b| a.date <=> b.date }
       end
 
-      render json: shows
-
-      # if params[:year].present?
-      #   shows = shows.by_year(params[:year].to_i)
-      # end
-
-      # if params[:venue].present?
-      #   venue = Venue.find(params[:venue])
-      #   shows = shows.where(venue_id: venue.id)
-      # end
-
-      # if params[:city].present? && params[:state].present?
-      #   shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
-      # elsif params[:state].present?
-      #   shows = shows.joins(:venue).merge(Venue.state(params[:state]))
-      # end
-
+      ShowSerializer.render(shows, view: :setlist)
     end
 
+    render json: s
   end
 
   # GET /shows/1
