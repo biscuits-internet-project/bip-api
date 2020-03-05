@@ -7,6 +7,10 @@ class ShowSerializer < Blueprinter::Base
     show.show_youtubes.map(&:video_id)
   end
 
+  field :year do |show, options|
+    show.date.year
+  end
+
   association :venue, blueprint: VenueSerializer
 
   view :setlist do
