@@ -9,32 +9,37 @@ class ShowsController < ApplicationController
       ids = PgSearch.multisearch(params[:search]).pluck(:searchable_id).take(100)
       shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
       shows = shows.sort {|a,b| a.date <=> b.date }
+      render json: ShowSerializer.render(shows, view: :setlist)
     elsif params[:last].present?
       ids = Show.order("date desc").limit(params[:last].to_i)
       shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
       shows = shows.sort {|a,b| b.date <=> a.date }
+      render json: ShowSerializer.render(shows, view: :setlist)
     else
-      shows = base_shows
-
-      if params[:year].present?
-        shows = shows.by_year(params[:year].to_i)
+      shows = Rails.cache.fetch('shows:all') do
+        s = base_shows.sort {|a,b| a.date <=> b.date }
+        ShowSerializer.render(s, view: :setlist)
       end
 
-      if params[:venue].present?
-        venue = Venue.find(params[:venue])
-        shows = shows.where(venue_id: venue.id)
-      end
+      render json: shows
 
-      if params[:city].present? && params[:state].present?
-        shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
-      elsif params[:state].present?
-        shows = shows.joins(:venue).merge(Venue.state(params[:state]))
-      end
+      # if params[:year].present?
+      #   shows = shows.by_year(params[:year].to_i)
+      # end
 
-      shows = shows.sort {|a,b| a.date <=> b.date }
+      # if params[:venue].present?
+      #   venue = Venue.find(params[:venue])
+      #   shows = shows.where(venue_id: venue.id)
+      # end
+
+      # if params[:city].present? && params[:state].present?
+      #   shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
+      # elsif params[:state].present?
+      #   shows = shows.joins(:venue).merge(Venue.state(params[:state]))
+      # end
+
     end
 
-    render json: ShowSerializer.render(shows, view: :setlist)
   end
 
   # GET /shows/1
