@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   has_secure_password
   rolify
   validates :email, :username, presence: true, uniqueness: true
@@ -9,6 +11,10 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   has_many :show_photos
+
+  def avatar_url
+    rails_blob_url(avatar) if avatar.present?
+  end
 
   def confirmed?
     confirmed_at.present?

@@ -13,7 +13,8 @@ class AuthenticateUser
         roles: user.roles.map(&:name),
         first_name: user.first_name,
         last_name: user.last_name,
-        username: user.username
+        username: user.username,
+        avatar_url: user.avatar_url
       )
     end
   end
