@@ -25,6 +25,7 @@ module Bip
     config.autoload_paths << Rails.root.join('lib')
 
     config.jwt_secret_key = ENV['JWT_SECRET_KEY']
+    config.middleware.use Rack::Deflater
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
