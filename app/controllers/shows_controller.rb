@@ -47,7 +47,7 @@ class ShowsController < ApplicationController
 
   # POST /shows
   def create
-    command = ShowCreate.call(show_params, params[:tracks])
+    command = ShowCreate.call(show_params)
 
     if command.success?
       show = Show.find(command.result.id)
@@ -91,18 +91,17 @@ class ShowsController < ApplicationController
     render head: :ok
   end
 
-
   private
 
-    def base_shows
-      Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist)
-    end
+  def base_shows
+    Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist)
+  end
 
-    def set_show
-      @show = Show.find(params[:id])
-    end
+  def set_show
+    @show = Show.find(params[:id])
+  end
 
-    def show_params
-      params.permit(:date, :venue_id, :notes)
-    end
+  def show_params
+    params.permit(:date, :venue_id, :notes, :relisten_url)
+  end
 end
