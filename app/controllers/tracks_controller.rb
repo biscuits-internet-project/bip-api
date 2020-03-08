@@ -27,7 +27,7 @@ class TracksController < ApplicationController
       @track.save
     end
     if @track.update(track_params)
-      render json: TrackSerializer.render(@track, view: :versions)
+      render json: TrackSerializer.render(@track)
     else
       render json: @track.errors, status: :unprocessable_entity
     end
@@ -39,6 +39,6 @@ class TracksController < ApplicationController
     end
 
     def track_params
-      params.except(:track_tag_list).permit(:set, :segue, :position, :note, :all_timer)
+      params.except(:track_tag_list).permit(:set, :segue, :position, :note, :all_timer, :song_id)
     end
 end
