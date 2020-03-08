@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_02_050719) do
+ActiveRecord::Schema.define(version: 2020_03_08_194947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -92,6 +92,17 @@ ActiveRecord::Schema.define(version: 2020_03_02_050719) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_bands_on_slug", unique: true
+  end
+
+  create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "sluggable_type", null: false
+    t.uuid "sluggable_id", null: false
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "galleries", id: false, force: :cascade do |t|
@@ -331,11 +342,6 @@ ActiveRecord::Schema.define(version: 2020_03_02_050719) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "times_played", default: 0, null: false
     t.index ["slug"], name: "index_venues_on_slug", unique: true
-  end
-
-  create_table "youtubes", id: false, force: :cascade do |t|
-    t.date "date"
-    t.text "url"
   end
 
   add_foreign_key "annotations", "tracks"

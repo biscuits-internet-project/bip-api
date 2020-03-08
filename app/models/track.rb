@@ -4,7 +4,7 @@ class Track < ApplicationRecord
   include Reviewable
   acts_as_taggable_on :track_tags
 
-  friendly_id :build_slug, use: [:sequentially_slugged, :finders]
+  friendly_id :build_slug, use: [:sequentially_slugged, :finders, :history]
 
   scope :setlist, -> { order("tracks.set in ('E1', 'E2'), tracks.set, tracks.position") }
 
@@ -21,5 +21,9 @@ class Track < ApplicationRecord
 
   def build_slug
     show.date_for_url + " " + song.slug
+  end
+
+  def should_generate_new_friendly_id?
+    song_id_changed? || show_id_changed?
   end
 end

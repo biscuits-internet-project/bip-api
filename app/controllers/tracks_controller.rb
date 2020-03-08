@@ -20,6 +20,17 @@ class TracksController < ApplicationController
     render json: TrackSerializer.render(@track)
   end
 
+  # POST /tracks
+  def create
+    track = Track.new(track_params)
+
+    if track.save
+      render json: TrackSerializer.render(track), status: :created
+    else
+      render json: song.errors, status: :unprocessable_entity
+    end
+  end
+
   # PATCH/PUT /tracks/1
   def update
     if params[:track_tag_list]
@@ -34,11 +45,12 @@ class TracksController < ApplicationController
   end
 
   private
-    def set_track
-      @track = Track.find(params[:id])
-    end
 
-    def track_params
-      params.except(:track_tag_list).permit(:set, :segue, :position, :note, :all_timer, :song_id)
-    end
+  def set_track
+    @track = Track.find(params[:id])
+  end
+
+  def track_params
+    params.except(:track_tag_list).permit(:set, :segue, :position, :note, :all_timer, :song_id)
+  end
 end
