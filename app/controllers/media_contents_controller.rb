@@ -5,7 +5,7 @@ class MediaContentsController < ApplicationController
 
   # GET /media_contents
   def index
-    @media_contents = MediaContent.all
+    @media_contents = MediaContent.all.order("date desc, year desc")
 
     render json: @media_contents
   end
@@ -48,6 +48,6 @@ class MediaContentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def media_content_params
-      params.permit(:date, :year, :url, :description)
+      params.permit(:date, :year, :url, :description, :media_type)
     end
 end

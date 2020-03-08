@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_08_222647) do
+ActiveRecord::Schema.define(version: 2020_03_08_223421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 2020_03_08_222647) do
     t.date "date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "media_type", null: false
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
