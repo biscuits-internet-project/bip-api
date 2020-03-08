@@ -60,7 +60,7 @@ class ShowsController < ApplicationController
   # PATCH/PUT /shows/1
   def update
     if @show.update(show_params)
-      render json: ShowSerializer.render(@show, view: :normal)
+      render json: ShowSerializer.render(@show, view: :setlist)
     else
       render json: @show.errors, status: :unprocessable_entity
     end
