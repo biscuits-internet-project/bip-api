@@ -26,7 +26,13 @@ class Show < ApplicationRecord
   end
 
   def song_titles
-    tracks.includes(:song).map { |t| t.song.title }.uniq.join(" ")
+    tracks.order(:position).includes(:song).map do |t|
+      if t.segue.present?
+        t.song.title + " " + t.segue
+      else
+        t.song.title
+      end
+    end.uniq.join(" ")
   end
 
   def has_photos

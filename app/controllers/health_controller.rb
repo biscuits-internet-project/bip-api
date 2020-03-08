@@ -1,4 +1,6 @@
 class HealthController < ApplicationController
+  skip_before_action :authenticate_request, only: [:index, :clear]
+
   def index
     render json: {"ping" => "pong"}
   end
