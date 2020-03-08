@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     post '/auth/password/reset', to: 'authentications#password_reset'
     put '/auth/password/update/:token', to: 'authentications#password_update'
     post '/contact', to: 'contact#create'
-    get '/clear', to: 'health#clear_cache'
+    get '/clear', to: 'health#clear'
   end
 
 end

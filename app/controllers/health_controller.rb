@@ -1,9 +1,9 @@
 class HealthController < ApplicationController
-  def show
+  def index
     render json: {"ping" => "pong"}
   end
 
-  def cache_clear
+  def clear
     ClearCacheJob.perform_later
     render json: {"clear" => "true"}
   end
