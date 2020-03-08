@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :users
     resources :authors
     resources :side_projects, only: [:index]
+    resources :media_contents
 
     scope path: '/:resource_type/:resource_id', shallow_path: "" do
       post :like, to: 'likes#create'

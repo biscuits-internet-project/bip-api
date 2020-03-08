@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_08_194947) do
+ActiveRecord::Schema.define(version: 2020_03_08_222647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -150,6 +150,15 @@ ActiveRecord::Schema.define(version: 2020_03_08_194947) do
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
     t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "media_contents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "year"
+    t.string "url"
+    t.string "description"
+    t.date "date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
