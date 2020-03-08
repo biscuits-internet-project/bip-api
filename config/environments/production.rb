@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.bip_ui_url = "https://beta.discobiscuits.net"
+  config.bip_ui_url = "https://discobiscuits.net"
   config.bip_api_url = "https://api.discobiscuits.net/api"
   Rails.application.routes.default_url_options[:host] = "https://api.discobiscuits.net"
 
