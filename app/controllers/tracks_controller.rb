@@ -51,6 +51,6 @@ class TracksController < ApplicationController
   end
 
   def track_params
-    params.except(:track_tag_list).permit(:set, :segue, :position, :note, :all_timer, :song_id)
+    params.except(:track_tag_list).permit(:set, :segue, :position, :note, :all_timer, :song_id, :show_id)
   end
 end
