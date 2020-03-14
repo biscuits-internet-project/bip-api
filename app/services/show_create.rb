@@ -9,7 +9,7 @@ class ShowCreate
 
   def call
     show = Show.new(params)
-    show.band_id = '4cccc925-8cd3-40a3-9ec1-5b9fd14dd040'
+    show.band = Band.find("the-disco-biscuits")
 
     if show.save
       return show
