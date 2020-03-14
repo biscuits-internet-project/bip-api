@@ -1,7 +1,7 @@
 class TracksController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
-  before_action :authorize_admin, only: [:update]
-  before_action :set_track, only: [:show, :update]
+  before_action :authorize_admin, only: [:update, :create, :destroy]
+  before_action :set_track, only: [:show, :update, :destroy]
 
   # GET /tracks/song/:id
   def index
@@ -22,10 +22,6 @@ class TracksController < ApplicationController
 
   # POST /tracks
   def create
-
-    puts params
-    puts track_params
-
     track = Track.new(track_params)
 
     if track.save
@@ -46,6 +42,11 @@ class TracksController < ApplicationController
     else
       render json: @track.errors, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /tracks/1
+  def destroy
+    @track.destroy
   end
 
   private
