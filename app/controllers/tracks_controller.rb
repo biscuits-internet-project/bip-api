@@ -22,6 +22,10 @@ class TracksController < ApplicationController
 
   # POST /tracks
   def create
+
+    puts params
+    puts track_params
+
     track = Track.new(track_params)
 
     if track.save

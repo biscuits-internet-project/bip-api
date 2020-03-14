@@ -4,8 +4,9 @@ Rails.application.routes.draw do
 
     root to: 'health#index'
 
-    resources :tracks
+    resources :tracks, except: [:create]
     resources :shows, shallow_path: "" do
+      resources :tracks, only: [:create]
       post :attend, on: :member
       post :unattend, on: :member
       get :photos, on: :member, to: "show_photos#index"
