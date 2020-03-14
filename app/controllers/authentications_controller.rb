@@ -15,7 +15,7 @@ class AuthenticationsController < ApplicationController
   # POST /auth/register
   def register
     command = UserRegister.call(user_params)
-  
+
     if command.success?
       render json: {}, status: :created
     else
@@ -26,7 +26,7 @@ class AuthenticationsController < ApplicationController
   # GET /auth/confirm
   def confirm
     command = UserConfirm.call(params[:token])
-  
+
     if command.success?
       redirect_to Rails.configuration.bip_ui_url + "/login?confirmed=true"
     else
@@ -69,6 +69,6 @@ class AuthenticationsController < ApplicationController
   end
 
   def user_params
-    params.except(:format).permit(:first_name, :last_name, :email, :password, :password_confirmation, :username, :avatar)
+    params.except(:format).permit(:first_name, :last_name, :email, :password, :username, :avatar)
   end
 end

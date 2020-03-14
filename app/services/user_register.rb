@@ -9,8 +9,9 @@ class UserRegister
 
   def call
     avatar = params[:avatar]
+    params[:password_confirmation] = params[:password]
     user = User.new(params.except(:avatar))
-  
+
     if user.save
       if avatar.present?
         user.avatar.attach(avatar)
