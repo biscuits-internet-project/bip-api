@@ -24,7 +24,7 @@ class TracksController < ApplicationController
   def create
     track = Track.new(track_params)
 
-    if track.save
+    if track.save && track.save_annotations(params[:annotations])
       render json: TrackSerializer.render(track), status: :created
     else
       render json: song.errors, status: :unprocessable_entity
@@ -37,7 +37,7 @@ class TracksController < ApplicationController
       @track.track_tag_list = params[:track_tag_list]
       @track.save
     end
-    if @track.update(track_params)
+    if @track.update(track_params) && @track.save_annotations(params[:annotations])
       render json: TrackSerializer.render(@track)
     else
       render json: @track.errors, status: :unprocessable_entity

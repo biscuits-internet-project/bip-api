@@ -26,4 +26,12 @@ class Track < ApplicationRecord
   def should_generate_new_friendly_id?
     song_id_changed? || show_id_changed?
   end
+
+  def save_annotations(anns)
+    return if anns.blank?
+    annotations.destroy_all
+    anns.compact.each do |ann|
+      annotations << Annotation.new(desc: ann)
+    end
+  end
 end
