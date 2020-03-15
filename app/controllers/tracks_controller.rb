@@ -27,7 +27,7 @@ class TracksController < ApplicationController
     if track.save && track.save_annotations(params[:annotations])
       render json: TrackSerializer.render(track), status: :created
     else
-      render json: song.errors, status: :unprocessable_entity
+      render json: track.errors, status: :unprocessable_entity
     end
   end
 
