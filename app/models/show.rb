@@ -16,6 +16,7 @@ class Show < ApplicationRecord
   has_many :tracks, dependent: :destroy
   has_many :show_photos, dependent: :destroy
   has_many :show_youtubes, dependent: :destroy
+  has_many :ratings, dependent: :destroy
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
 

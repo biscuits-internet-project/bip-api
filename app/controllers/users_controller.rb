@@ -51,6 +51,11 @@ class UsersController < ApplicationController
     render json: show_ids
   end
 
+  def ratings
+    ratings = current_user.ratings
+    render json: RatingSerializer.render(ratings)
+  end
+
   private
     def set_user
       @user = User.find(params[:id])

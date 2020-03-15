@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :ratings
   resources :favorites
   scope :api, defaults: { format: :json } do
 
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
       post :unattend, on: :member
       post :favorite, on: :member
       post :unfavorite, on: :member
+      post :rate, on: :member
       get :photos, on: :member, to: "show_photos#index"
     end
     resources :bands
@@ -25,12 +27,11 @@ Rails.application.routes.draw do
     scope path: '/:resource_type/:resource_id', shallow_path: "" do
       post :like, to: 'likes#create'
       post :unlike, to: 'likes#destroy'
-
       resources :reviews, shallow: true
     end
 
-
     get '/attendances', to: 'users#attendances'
+    get '/ratings', to: 'users#ratings'
     get '/favorites', to: 'users#favorites'
     post '/songs/slugs', to: 'songs#index'
     get '/tracks/songs/:song_id', to: 'tracks#index'

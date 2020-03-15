@@ -1,7 +1,7 @@
 class ShowsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
   before_action :authorize_admin, only: [:create, :update, :destroy]
-  before_action :set_show, only: [:update, :destroy, :attend, :unattend, :favorite, :unfavorite]
+  before_action :set_show, only: [:update, :destroy, :attend, :unattend, :favorite, :unfavorite, :rate]
 
   # GET /shows
   def index
@@ -107,6 +107,23 @@ class ShowsController < ApplicationController
     favorites = Favorite.where(show: @show, user: current_user)
     favorites.each(&:destroy)
     render head: :ok
+  end
+
+  def rate
+    rating = Rating.find_by(show: @show, user: current_user)
+
+    if rating.present?
+      rating.update_attribute(:value, params[:value])
+    else
+      puts params[:value]
+      rating = Rating.new(show: @show, user: current_user, value: params[:value])
+      if !rating.save
+        render json: rating.errors, status: :unprocessable_entity
+        return
+      end
+    end
+
+    render :ok
   end
 
   private

@@ -9,10 +9,11 @@ class User < ApplicationRecord
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
 
-  has_one_attached :avatar
+  has_one_attached :avatar, dependent: :destroy
   has_many :show_photos
   has_many :attendances, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :ratings, dependent: :destroy
 
   def avatar_url
     rails_blob_url(avatar) if avatar.present?
