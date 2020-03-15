@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :show_photos
   has_many :attendances, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   def avatar_url
     rails_blob_url(avatar) if avatar.present?

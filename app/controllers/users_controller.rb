@@ -46,6 +46,11 @@ class UsersController < ApplicationController
     render json: show_ids
   end
 
+  def favorites
+    show_ids = current_user.favorites.pluck(:show_id)
+    render json: show_ids
+  end
+
   private
     def set_user
       @user = User.find(params[:id])

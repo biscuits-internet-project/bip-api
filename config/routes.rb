@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :favorites
   scope :api, defaults: { format: :json } do
 
     root to: 'health#index'
@@ -9,6 +10,8 @@ Rails.application.routes.draw do
       resources :tracks, only: [:create]
       post :attend, on: :member
       post :unattend, on: :member
+      post :favorite, on: :member
+      post :unfavorite, on: :member
       get :photos, on: :member, to: "show_photos#index"
     end
     resources :bands
@@ -28,6 +31,7 @@ Rails.application.routes.draw do
 
 
     get '/attendances', to: 'users#attendances'
+    get '/favorites', to: 'users#favorites'
     post '/songs/slugs', to: 'songs#index'
     get '/tracks/songs/:song_id', to: 'tracks#index'
     post '/auth/login', to: 'authentications#login'

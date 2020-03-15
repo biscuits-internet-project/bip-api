@@ -1,7 +1,7 @@
 class ShowsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show]
   before_action :authorize_admin, only: [:create, :update, :destroy]
-  before_action :set_show, only: [:update, :destroy, :attend, :unattend]
+  before_action :set_show, only: [:update, :destroy, :attend, :unattend, :favorite, :unfavorite]
 
   # GET /shows
   def index
@@ -88,6 +88,24 @@ class ShowsController < ApplicationController
   def unattend
     attendances = Attendance.where(show: @show, user: current_user)
     attendances.each(&:destroy)
+    render head: :ok
+  end
+
+  def favorite
+    favorite = Favorite.new(show: @show, user: current_user)
+
+    if favorite.save
+      render head: :ok
+    else
+      render json: favorite.errors, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotUnique
+    render :ok
+  end
+
+  def unfavorite
+    favorites = Favorite.where(show: @show, user: current_user)
+    favorites.each(&:destroy)
     render head: :ok
   end
 

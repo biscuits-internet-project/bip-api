@@ -1,6 +1,5 @@
 class LikesController < ApplicationController
 
-  # POST /:resource_type/:resource_id/likes
   def create
     like = Like.create(likeable: resource, user: current_user)
 
@@ -13,7 +12,6 @@ class LikesController < ApplicationController
     render :ok
   end
 
-  # DELETE /:resource_type/:resource_id/likes
   def destroy
     likes = Like.where(likeable: resource, user: current_user)
     likes.each(&:destroy)
