@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_admin
+  before_action :authorize_admin, except: [:attendances]
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   # POST /users
   def create
     command = UserCreate.call(user_params)
-  
+
     if command.success?
       user = User.find(command.result.id)
       render json: UserSerializer.render(user), status: :created
@@ -38,6 +38,12 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
+  end
+
+  # GET /attendances
+  def attendances
+    show_ids = current_user.attendances.pluck(:show_id)
+    render json: show_ids
   end
 
   private

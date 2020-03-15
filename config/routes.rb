@@ -13,8 +13,7 @@ Rails.application.routes.draw do
     end
     resources :bands
     resources :venues
-    resources :songs do
-    end
+    resources :songs
     resources :users
     resources :authors
     resources :side_projects, only: [:index]
@@ -27,6 +26,8 @@ Rails.application.routes.draw do
       resources :reviews, shallow: true
     end
 
+
+    get '/attendances', to: 'users#attendances'
     post '/songs/slugs', to: 'songs#index'
     get '/tracks/songs/:song_id', to: 'tracks#index'
     post '/auth/login', to: 'authentications#login'
