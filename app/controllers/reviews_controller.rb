@@ -20,7 +20,7 @@ class ReviewsController < ApplicationController
     if review.errors.blank?
       render json: ReviewSerializer.render(review), status: 201
     else
-      render json: { errors: like.errors }, status: :unprocessable_entity
+      render json: { errors: review.errors }, status: :unprocessable_entity
     end
   end
 
