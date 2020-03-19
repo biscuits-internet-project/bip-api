@@ -16,6 +16,7 @@ class BlogPostCreate
     post = BlogPost.new(params.except(:primary_image, :secondary_image, :tag_list))
     post.user = user
     post.tag_list = tag_list
+    post.published_at = Date.now if post.state == "published"
 
     if post.save
       if primary_image.present?
