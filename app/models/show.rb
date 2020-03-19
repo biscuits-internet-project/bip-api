@@ -50,7 +50,11 @@ class Show < ApplicationRecord
   end
 
   def dates_for_search
-    date.stamp("12/30") + " " + date.stamp("1/29/2015") + " " + date.stamp("1/29/99") + " " + date.strftime("%Y") + " " + date.strftime("%B")
+    date.strftime("%-m/%-d") + " " +
+    date.strftime("%-m/%-d/%Y") + " " +
+    date.strftime("%-m/%-d/%y") + " " +
+    date.strftime("%Y") + " " +
+    date.strftime("%B")
   end
 
   def track_annotations
