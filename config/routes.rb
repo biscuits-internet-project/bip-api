@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       post :rate, on: :member
       get :photos, on: :member, to: "show_photos#index"
       get :user, on: :collection
-      resources :reviews, only: [:create]
+      resources :reviews, only: [:create, :index]
     end
     resources :bands
     resources :venues

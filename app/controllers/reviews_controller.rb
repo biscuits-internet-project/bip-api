@@ -5,6 +5,10 @@ class ReviewsController < ApplicationController
   def index
     reviews = Review.joins(:user).all
 
+    if params[:show_id]
+      reviews = reviews.where(show_id: params[:show_id])
+    end
+
     render json: ReviewSerializer.render(reviews)
   end
 
