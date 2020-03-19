@@ -82,7 +82,7 @@ class BlogPostsController < ApplicationController
   end
 
   def blog_post_params
-    params.permit(:published_at, :title, :blurb, :content)
+    params.permit(:published_at, :title, :blurb, :content, :primary_image, :secondary_image)
   end
 
   def index_draft?
