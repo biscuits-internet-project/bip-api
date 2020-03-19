@@ -5,7 +5,6 @@ class Show < ApplicationRecord
 
   extend FriendlyId
   include Likeable
-  include Reviewable
 
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders]
 
@@ -18,6 +17,7 @@ class Show < ApplicationRecord
   has_many :show_photos, dependent: :destroy
   has_many :show_youtubes, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :reviews, dependent: :destroy
   validates :venue, :slug, :band, presence: true
   validates :slug, uniqueness: true
 

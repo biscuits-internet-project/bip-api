@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post :rate, on: :member
       get :photos, on: :member, to: "show_photos#index"
       get :user, on: :collection
+      resources :reviews, only: [:create]
     end
     resources :bands
     resources :venues
@@ -29,11 +30,11 @@ Rails.application.routes.draw do
     resources :authors
     resources :side_projects, only: [:index]
     resources :media_contents
+    resources :reviews, except: [:create]
 
     scope path: '/:resource_type/:resource_id', shallow_path: "" do
       post :like, to: 'likes#create'
       post :unlike, to: 'likes#destroy'
-      resources :reviews, shallow: true
     end
 
     get '/attendances', to: 'users#attendances'

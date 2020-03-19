@@ -2,16 +2,16 @@ class ReviewsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index]
   before_action :set_review, only: [:show, :update, :destroy]
 
-  # POST /:resource_type/:resource_id/reviews
   def index
-    reviews = resource.reviews.joins(:user)
+    reviews = Review.joins(:user).all
 
     render json: ReviewSerializer.render(reviews)
   end
 
-  # POST /:resource_type/:resource_id/reviews
+  # POST /:shows/:show_id/reviews
   def create
-    review = Review.create(reviewable: resource, user: current_user, content: params[:content])
+    show = Show.find(params[:show_id])
+    review = Review.create(show: show, user: current_user, content: params[:content])
 
     if review.errors.blank?
       render json: ReviewSerializer.render(review), status: 201
