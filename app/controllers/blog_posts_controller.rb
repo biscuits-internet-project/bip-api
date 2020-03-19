@@ -1,5 +1,5 @@
 class BlogPostsController < ApplicationController
-  skip_before_action :authenticate_request, only: [:index, :show]
+  skip_before_action :authenticate_request, only: [:index, :show, :tags]
   before_action :authorize_admin, only: [:create, :update, :destroy, :publish]
   before_action :set_blog_post, only: [:show, :update, :destroy, :publish]
 
@@ -73,6 +73,11 @@ class BlogPostsController < ApplicationController
     render_not_authorized if @blog_post.user_id != current_user.id
 
     @blog_post.destroy
+  end
+
+  def tags
+    tags_with_counts = BlogPost.state(:published).tag_counts_on(:tags).to_a.map{|t| {tag: t.name, count: t.taggings_count}}
+    render json: tags_with_counts
   end
 
   private

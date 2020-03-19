@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
     resources :blog_posts do
       put :publish, on: :member
+      get :tags, on: :collection
       resources :comments, shallow: true
     end
     resources :tracks, except: [:create] do
