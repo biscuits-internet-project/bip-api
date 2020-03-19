@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_025503) do
+ActiveRecord::Schema.define(version: 2020_04_05_000610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -92,6 +92,22 @@ ActiveRecord::Schema.define(version: 2020_03_24_025503) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_bands_on_slug", unique: true
+  end
+
+  create_table "blog_posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "title", null: false
+    t.text "blurb"
+    t.text "slug", null: false
+    t.text "content"
+    t.string "state", default: "draft", null: false
+    t.datetime "published_at"
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["published_at"], name: "blog_posts_published_at_idx"
+    t.index ["state"], name: "blog_posts_state_idx"
+    t.index ["title"], name: "blog_posts_title_idx"
+    t.index ["user_id"], name: "index_blog_posts_on_user_id"
   end
 
   create_table "favorites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -379,6 +395,7 @@ ActiveRecord::Schema.define(version: 2020_03_24_025503) do
   add_foreign_key "annotations", "tracks"
   add_foreign_key "attendances", "shows"
   add_foreign_key "attendances", "users"
+  add_foreign_key "blog_posts", "users"
   add_foreign_key "favorites", "shows"
   add_foreign_key "favorites", "users"
   add_foreign_key "likes", "users"
