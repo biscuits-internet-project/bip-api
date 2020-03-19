@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-
+  skip_before_action :authenticate_request, only: [:index]
   before_action :set_review, only: [:show, :update, :destroy]
 
   # POST /:resource_type/:resource_id/reviews
