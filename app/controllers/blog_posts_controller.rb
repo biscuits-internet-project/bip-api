@@ -5,7 +5,7 @@ class BlogPostsController < ApplicationController
 
   # GET /blog_posts
   def index
-    posts = BlogPost
+    posts = BlogPost.includes(:primary_image_attachment, :secondary_image_attachment, :user, :taggings)
 
     begin
       if params[:state]
@@ -13,6 +13,9 @@ class BlogPostsController < ApplicationController
 
         if params[:state] == "draft"
           authenticate_request
+          if current_user.nil?
+            return
+          end
           posts = posts.where(user_id: current_user.id)
         end
       else
@@ -80,5 +83,9 @@ class BlogPostsController < ApplicationController
 
   def blog_post_params
     params.permit(:published_at, :title, :blurb, :content)
+  end
+
+  def index_draft?
+    params[:state] == "draft"
   end
 end
