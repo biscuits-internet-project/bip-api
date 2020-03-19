@@ -17,8 +17,7 @@ class PasswordUpdate
     end
 
     user.password = password
-    user.reset_password_token = SecureRandom.uuid
-    user.reset_password_sent_at = DateTime.now
+    user.password_confirmation = password
 
     if user.save
       return user
