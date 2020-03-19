@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post :unfavorite, on: :member
       post :rate, on: :member
       get :photos, on: :member, to: "show_photos#index"
+      get :user, on: :collection
     end
     resources :bands
     resources :venues
