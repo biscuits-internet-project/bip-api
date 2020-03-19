@@ -3,7 +3,7 @@ class Track < ApplicationRecord
   include Likeable
   acts_as_taggable_on :track_tags
 
-  friendly_id :build_slug, use: [:sequentially_slugged, :finders, :history]
+  friendly_id :slug_candidates, use: [:sequentially_slugged, :finders, :history]
 
   scope :setlist, -> { order("tracks.set in ('E1', 'E2'), tracks.set, tracks.position") }
 
@@ -16,13 +16,15 @@ class Track < ApplicationRecord
   has_one :venue, through: :show
 
   validates :song, :show, :position, :set, presence: true
-  validates :slug, presence: true, uniqueness: true
+  validates :slug, presence: true
 
   delegate :title, to: :song, prefix: true
   delegate :slug, to: :song, prefix: true
 
-  def build_slug
-    show.date_for_url + " " + song.slug
+  def slug_candidates
+    [
+      [show.date_for_url, song.slug, :set, :position]
+    ]
   end
 
   def should_generate_new_friendly_id?
@@ -30,7 +32,6 @@ class Track < ApplicationRecord
   end
 
   def save_annotations(anns)
-    return if anns.blank?
     annotations.destroy_all
     anns.compact.each do |ann|
       annotations << Annotation.new(desc: ann)
@@ -43,4 +44,5 @@ class Track < ApplicationRecord
 
     self.update_columns(previous_track_id: previous_track_id, next_track_id: next_track_id)
   end
+
 end

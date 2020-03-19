@@ -8,7 +8,7 @@ class TracksController < ApplicationController
     song = Song.find(params["song_id"])
 
     tracks = Rails.cache.fetch("song:#{song.slug}:tracks") do
-      tracks = Track.includes(:annotations, :venue, show: [:venue, :show_youtubes], previous_track: [:annotations], next_track: [:annotations]) # currently excluded from serializer: :track_tag_taggings, :track_tags, 
+      tracks = Track.includes(:annotations, :venue, show: [:venue, :show_youtubes], previous_track: [:annotations], next_track: [:annotations]) # currently excluded from serializer: :track_tag_taggings, :track_tags,
                     .joins(:show)
                     .where(song_id: song.id)
                     .order('shows.date').to_a
@@ -32,9 +32,11 @@ class TracksController < ApplicationController
 
   # POST /tracks
   def create
-    track = Track.new(track_params)
+    show = Show.find(params[:show_id])
+    track = Track.new(track_params.merge(show: show))
 
-    if track.save && track.save_annotations(params[:annotations])
+    if track.save
+      track.save_annotations(params[:annotations])
       render json: TrackSerializer.render(track), status: :created
     else
       render json: track.errors, status: :unprocessable_entity
