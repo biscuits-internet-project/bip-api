@@ -1,7 +1,7 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :venue_country, :date_for_search,
-   :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten]
+  multisearchable :against => [:venue_name, :venue_city, :venue_country, :dates_for_search,
+    :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten, :track_annotations]
 
   extend FriendlyId
   include Likeable
@@ -14,6 +14,7 @@ class Show < ApplicationRecord
   belongs_to :venue, touch: true
   belongs_to :band
   has_many :tracks, dependent: :destroy
+  has_many :annotations, through: :tracks
   has_many :show_photos, dependent: :destroy
   has_many :show_youtubes, dependent: :destroy
   has_many :ratings, dependent: :destroy
@@ -48,12 +49,12 @@ class Show < ApplicationRecord
     return "relisten" if relisten_url.present?
   end
 
-  def date_month
-    date.strftime("%B")
+  def dates_for_search
+    date.stamp("12/30") + " " + date.stamp("1/29/2015") + " " + date.stamp("1/29/99") + " " + date.strftime("%Y") + " " + date.strftime("%B")
   end
 
-  def date_for_search
-    date.stamp("1/29/2015")
+  def track_annotations
+    annotations.map(&:desc).join(" ")
   end
 
   def self.by_year(year)
