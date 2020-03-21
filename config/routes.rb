@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     post '/auth/login', to: 'authentications#login'
     post '/auth/register', to: 'authentications#register'
     get '/auth/confirm', to: 'authentications#confirm'
+    get '/auth/refresh', to: 'authentications#refresh'
     post '/auth/password/reset', to: 'authentications#password_reset'
     put '/auth/password/update/:token', to: 'authentications#password_update'
     post '/contact', to: 'contact#create'
