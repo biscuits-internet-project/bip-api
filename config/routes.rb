@@ -6,7 +6,9 @@ Rails.application.routes.draw do
 
     root to: 'health#index'
 
-    resources :tracks, except: [:create]
+    resources :tracks, except: [:create] do
+      get :charts, on: :collection
+    end
     resources :shows, shallow_path: "" do
       resources :tracks, only: [:create]
       post :attend, on: :member

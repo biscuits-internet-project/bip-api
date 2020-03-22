@@ -1,5 +1,5 @@
 class TracksController < ApplicationController
-  skip_before_action :authenticate_request, only: [:index, :show]
+  skip_before_action :authenticate_request, only: [:index, :show, :charts]
   before_action :authorize_admin, only: [:update, :create, :destroy]
   before_action :set_track, only: [:show, :update, :destroy]
 
@@ -13,6 +13,12 @@ class TracksController < ApplicationController
     end
 
     render json: tracks
+  end
+
+  def charts
+    tracks = Track.includes(:track_tag_taggings, :track_tags, :annotations, [song: :author], show: [:venue, :show_youtubes]).where("COALESCE(note, '') != ''").order('shows.date').to_a
+
+    render json: TrackSerializer.render(tracks, view: :charts)
   end
 
   # GET /tracks/1
