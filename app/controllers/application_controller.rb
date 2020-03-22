@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
   end
 
   def render_not_authorized
-      render json: { errors: like.errors }, status: :unprocessable_entity
+    render json: { error: 'Not Authorized' }, status: :unprocessable_entity
   end
 
   def resource
