@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_admin, except: [:attendances]
+  before_action :authorize_admin, except: [:attendances, :favorites, :ratings, :show]
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
@@ -11,7 +11,11 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: UserSerializer.render(@user)
+    if current_user.admin? || current_user.id == @user.id
+      render json: UserSerializer.render(@user)
+    else
+      render json: "Not authorized", status: :unprocessable_entity
+    end
   end
 
   # POST /users
