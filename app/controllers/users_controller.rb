@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_admin, except: [:attendances, :favorites, :ratings, :show]
+  before_action :authorize_admin, except: [:update, :attendances, :favorites, :ratings, :show]
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
@@ -32,10 +32,14 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: UserSerializer.render(@user)
+    if current_user.admin? || current_user.id == @user.id
+      if @user.update(user_params)
+        render json: UserSerializer.render(@user)
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render_not_authorized
     end
   end
 
