@@ -15,19 +15,20 @@ class ShowsController < ApplicationController
         shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
         shows = shows.sort {|a,b| b.date <=> a.date }
       else
+        shows = base_shows
         if params[:year].present?
-          shows = base_shows.by_year(params[:year].to_i)
+          shows = shows.by_year(params[:year].to_i)
         end
 
         if params[:venue].present?
           venue = Venue.find(params[:venue])
-          shows = base_shows.where(venue_id: venue.id)
+          shows = shows.where(venue_id: venue.id)
         end
 
         if params[:city].present? && params[:state].present?
-          shows = base_shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
+          shows = shows.joins(:venue).merge(Venue.city(params[:city], params[:state]))
         elsif params[:state].present?
-          shows = base_shows.joins(:venue).merge(Venue.state(params[:state]))
+          shows = shows.joins(:venue).merge(Venue.state(params[:state]))
         end
 
         shows = shows.sort {|a,b| a.date <=> b.date }
