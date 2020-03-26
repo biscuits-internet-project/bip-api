@@ -25,6 +25,10 @@ class Song < ApplicationRecord
     shows.order("date asc").last
   end
 
+  def shows_since_last_played
+    Show.where(Show.arel_table[:date].gt(self.date_last_played)).count
+  end
+
   def first_played_show
     shows.order("date asc").first
   end
