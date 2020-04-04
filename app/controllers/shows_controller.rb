@@ -40,6 +40,19 @@ class ShowsController < ApplicationController
     render json: s
   end
 
+  # retrieves shows associated with current user
+  def user
+    show_ids = begin
+      current_user.attendances.pluck(:show_id) +
+      current_user.favorites.pluck(:show_id) +
+      current_user.ratings.pluck(:show_id)
+    end.uniq
+
+    shows = base_shows.where(id: show_ids).sort {|a,b| a.date <=> b.date }
+    render json: ShowSerializer.render(shows, view: :setlist)
+  end
+
+
   # GET /shows/1
   def show
     show = Show.includes(:venue, tracks: [:annotations, :song]).merge(Track.setlist).find(params[:id])
