@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
 
-  resources :ratings
-  resources :favorites
   scope :api, defaults: { format: :json } do
 
     root to: 'health#index'
 
+    resources :blog_posts do
+      put :publish, on: :member
+    end
     resources :tracks, except: [:create] do
       get :charts, on: :collection
     end
