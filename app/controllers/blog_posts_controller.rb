@@ -34,10 +34,10 @@ class BlogPostsController < ApplicationController
 
   # POST /blog_posts
   def create
-    blog_post = BlogPost.new(blog_post_params.merge(user_id: current_user.id))
-    blog_post.tag_list = params[:tag_list]
+    command = BlogPostCreate.call(current_user, blog_post_params)
 
-    if blog_post.save
+    if command.success?
+      blog_post = BlogPost.find(command.result.id)
       render json: BlogPostSerializer.render(blog_post, view: :full), status: :created
     else
       render json: blog_post.errors, status: :unprocessable_entity
