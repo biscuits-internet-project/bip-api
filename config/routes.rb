@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :comments
   scope :api, defaults: { format: :json } do
 
     root to: 'health#index'
 
     resources :blog_posts do
       put :publish, on: :member
+      resources :comments, shallow: true
     end
     resources :tracks, except: [:create] do
       get :charts, on: :collection

@@ -11,7 +11,7 @@ class PasswordUpdate
   def call
     user = User.find_by(reset_password_token: token)
 
-    if user.nil? || user.reset_password_sent_at > 1.hour.ago
+    if user.nil? || user.reset_password_sent_at > 2.hour.ago
       errors.add(:base, "Reset password has expired. Please try again.")
       return
     end

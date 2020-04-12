@@ -1,5 +1,7 @@
 class BlogPost < ApplicationRecord
   extend FriendlyId
+  include Commentable
+  acts_as_taggable
 
   friendly_id :title, use: [:sequentially_slugged, :finders]
 
