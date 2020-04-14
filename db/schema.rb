@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_000610) do
+ActiveRecord::Schema.define(version: 2020_04_06_041251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -130,42 +130,6 @@ ActiveRecord::Schema.define(version: 2020_04_05_000610) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
-  create_table "galleries", id: false, force: :cascade do |t|
-    t.integer "id", null: false
-    t.string "url", limit: 1000, null: false
-    t.string "type", limit: 20, null: false
-    t.integer "showid", null: false
-  end
-
-  create_table "legacy_shows", id: false, force: :cascade do |t|
-    t.integer "id", null: false
-    t.integer "band"
-    t.date "date"
-    t.integer "venue", default: 0, null: false
-    t.text "set1"
-    t.text "set2"
-    t.text "set3"
-    t.text "set4"
-    t.text "encore1"
-    t.text "encore2"
-    t.text "precomment"
-    t.text "comment1"
-    t.text "comment2"
-    t.text "comment3"
-    t.text "comment4"
-    t.text "comment5"
-    t.text "comment6"
-    t.text "comment7"
-    t.text "comment8"
-    t.text "comment9"
-    t.text "comment10"
-    t.text "sources"
-    t.text "flips"
-    t.integer "showorder"
-    t.text "reviews"
-    t.string "archiveorg", limit: 300
-  end
-
   create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "likeable_id", null: false
     t.string "likeable_type", null: false
@@ -279,8 +243,8 @@ ActiveRecord::Schema.define(version: 2020_04_05_000610) do
     t.string "mem5"
     t.string "mem6"
     t.string "mem7"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -300,7 +264,13 @@ ActiveRecord::Schema.define(version: 2020_04_05_000610) do
     t.text "featured_lyric"
     t.integer "times_played", default: 0, null: false
     t.date "date_last_played"
+    t.jsonb "yearly_play_data", default: {}, null: false
+    t.jsonb "longest_gaps_data", default: {}, null: false
+    t.integer "most_common_year"
+    t.integer "least_common_year"
+    t.index ["longest_gaps_data"], name: "index_songs_on_longest_gaps_data", using: :gin
     t.index ["slug"], name: "index_songs_on_slug", unique: true
+    t.index ["yearly_play_data"], name: "index_songs_on_yearly_play_data", using: :gin
   end
 
   create_table "taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -344,7 +314,11 @@ ActiveRecord::Schema.define(version: 2020_04_05_000610) do
     t.string "slug"
     t.string "note"
     t.boolean "all_timer", default: false
+    t.uuid "previous_track_id"
+    t.uuid "next_track_id"
     t.index ["likes_count"], name: "index_tracks_on_likes_count"
+    t.index ["next_track_id"], name: "index_tracks_on_next_track_id"
+    t.index ["previous_track_id"], name: "index_tracks_on_previous_track_id"
     t.index ["slug"], name: "index_tracks_on_slug", unique: true
   end
 
@@ -389,7 +363,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_000610) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "times_played", default: 0, null: false
-    t.index ["slug"], name: "index_venues_on_slug", unique: true
+    t.index ["slug"], name: "index_venues_on_slug"
   end
 
   add_foreign_key "annotations", "tracks"

@@ -1,6 +1,6 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:venue_name, :venue_city, :venue_country, :dates_for_search,
+  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :venue_country, :dates_for_search,
     :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten, :track_annotations]
 
   extend FriendlyId
@@ -62,6 +62,14 @@ class Show < ApplicationRecord
     boy = dt.beginning_of_year
     eoy = dt.end_of_year
     where("date >= ? and date <= ?", boy, eoy)
+  end
+
+  def self.by_day_of_year(month, day)
+    where("EXTRACT(MONTH FROM date) = ? AND EXTRACT(DAY FROM date) = ?", month, day)
+  end
+
+  def shows_on_same_day
+    self.class.by_day_of_year(self.date.month, self.day).where.not(id: self.id).order(:date)
   end
 
   def date_for_url
