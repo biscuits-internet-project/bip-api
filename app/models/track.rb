@@ -9,8 +9,8 @@ class Track < ApplicationRecord
 
   belongs_to :song, touch: true
   belongs_to :show
-  belongs_to :previous_track, :class_name => 'Track', optional: true
-  belongs_to :next_track, :class_name => 'Track', optional: true
+  belongs_to :previous_track, class_name: 'Track', optional: true
+  belongs_to :next_track, class_name: 'Track', optional: true
 
   has_many :annotations, dependent: :destroy
   has_one :venue, through: :show
