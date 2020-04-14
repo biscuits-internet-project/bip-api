@@ -8,7 +8,11 @@ class TracksController < ApplicationController
     song = Song.find(params["song_id"])
 
     tracks = Rails.cache.fetch("song:#{song.slug}:tracks") do
-      tracks = Track.includes(:track_tag_taggings, :track_tags, :annotations, :venue, :show).where(song_id: song.id).order('shows.date').to_a
+      tracks = Track.includes(:annotations, :venue, show: [:venue, :show_youtubes], previous_track: [:annotations], next_track: [:annotations]) # currently excluded from serializer: :track_tag_taggings, :track_tags, 
+                    .joins(:show)
+                    .where(song_id: song.id)
+                    .order('shows.date').to_a
+                    # .select('tracks.*, shows.date, shows.date - lag(shows.date, 1) OVER (ORDER BY shows.date) as days_since_previous_occurrence')
       TrackSerializer.render(tracks, view: :versions)
     end
 

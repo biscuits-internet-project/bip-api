@@ -9,6 +9,9 @@ class Track < ApplicationRecord
 
   belongs_to :song, touch: true
   belongs_to :show
+  belongs_to :previous_track, class_name: 'Track', optional: true
+  belongs_to :next_track, class_name: 'Track', optional: true
+
   has_many :annotations, dependent: :destroy
   has_one :venue, through: :show
 
@@ -32,5 +35,12 @@ class Track < ApplicationRecord
     anns.compact.each do |ann|
       annotations << Annotation.new(desc: ann)
     end
+  end
+
+  def update_previous_and_next_tracks
+    previous_track_id = self.class.where(show_id: self.show_id, set: self.set, position: self.position.to_i - 1).limit(1).pluck(:id).first
+    next_track_id = self.class.where(show_id: self.show_id, set: self.set, position: self.position.to_i + 1).limit(1).pluck(:id).first
+
+    self.update_columns(previous_track_id: previous_track_id, next_track_id: next_track_id)
   end
 end

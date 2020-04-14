@@ -1,4 +1,10 @@
 namespace :tracks do
+  task :backfill => [:environment] do
+
+    Track.where(previous_track_id: nil, next_track_id: nil).each(&:update_previous_and_next_tracks)
+
+  end
+
   task :build => [:environment] do
     shows = Show.all.to_a
     songs = Song.all.to_a

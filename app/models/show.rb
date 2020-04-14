@@ -68,6 +68,14 @@ class Show < ApplicationRecord
     where("date >= ? and date <= ?", boy, eoy)
   end
 
+  def self.by_day_of_year(month, day)
+    where("EXTRACT(MONTH FROM date) = ? AND EXTRACT(DAY FROM date) = ?", month, day)
+  end
+
+  def shows_on_same_day
+    self.class.by_day_of_year(self.date.month, self.day).where.not(id: self.id).order(:date)
+  end
+
   def date_for_url
     if date
       date.stamp('2015 01 29')
