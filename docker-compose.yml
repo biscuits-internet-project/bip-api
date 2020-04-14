@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   db:
     image: postgres
@@ -6,7 +6,7 @@ services:
       - "5435:5432"
     environment:
       POSTGRES_USER: development
-      POSTGRES_PASSWORD: 
+      POSTGRES_PASSWORD:
       POSTGRES_DB: bip_dev
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
@@ -19,3 +19,10 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
+  redis:
+    image: "redis:5.0-alpine"
+    volumes:
+      - "redis:/data"
+volumes:
+  redis:

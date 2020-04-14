@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
 
   def authenticate_request
     @current_user = AuthorizeRequest.call(request.headers).result
-    render json: { error: 'Not Authorized' }, status: 401 unless @current_user
+    render_not_authenticated unless @current_user
   end
 
   def authorize_admin
@@ -19,7 +19,11 @@ class ApplicationController < ActionController::API
   end
 
   def render_not_authorized
-    render json: { error: 'Not Authorized' }, status: :unprocessable_entity
+    render json: { error: 'Not Authorized' }, status: 403
+  end
+
+  def render_not_authenticated
+    render json: { error: 'Not Authorized' }, status: 401
   end
 
   def resource

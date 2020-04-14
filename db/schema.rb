@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_041251) do
+ActiveRecord::Schema.define(version: 2020_04_14_014605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -110,6 +110,18 @@ ActiveRecord::Schema.define(version: 2020_04_06_041251) do
     t.index ["user_id"], name: "index_blog_posts_on_user_id"
   end
 
+  create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "commentable_id", null: false
+    t.string "commentable_type", null: false
+    t.text "content", null: false
+    t.string "status", default: "published", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "favorites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "show_id", null: false
@@ -171,17 +183,15 @@ ActiveRecord::Schema.define(version: 2020_04_06_041251) do
   end
 
   create_table "reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "reviewable_id", null: false
-    t.string "reviewable_type", null: false
     t.text "content", null: false
     t.string "status", default: "draft", null: false
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "likes_count", default: 0, null: false
+    t.uuid "show_id"
     t.index ["likes_count"], name: "index_reviews_on_likes_count"
-    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable_type_and_reviewable_id"
-    t.index ["user_id", "reviewable_type", "reviewable_id"], name: "index_reviews_on_user_id_and_reviewable_type_and_reviewable_id", unique: true
+    t.index ["show_id"], name: "index_reviews_on_show_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
@@ -370,6 +380,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_041251) do
   add_foreign_key "attendances", "shows"
   add_foreign_key "attendances", "users"
   add_foreign_key "blog_posts", "users"
+  add_foreign_key "comments", "users"
   add_foreign_key "favorites", "shows"
   add_foreign_key "favorites", "users"
   add_foreign_key "likes", "users"
