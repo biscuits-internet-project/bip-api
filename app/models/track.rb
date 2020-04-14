@@ -37,8 +37,6 @@ class Track < ApplicationRecord
     end
   end
 
-  attr_accessor :days_since_previous_occurrence
-
   def update_previous_and_next_tracks
     previous_track_id = self.class.where(show_id: self.show_id, set: self.set, position: self.position.to_i - 1).limit(1).pluck(:id).first
     next_track_id = self.class.where(show_id: self.show_id, set: self.set, position: self.position.to_i + 1).limit(1).pluck(:id).first

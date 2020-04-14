@@ -1,6 +1,6 @@
 class Show < ApplicationRecord
   include PgSearch::Model
-  multisearchable :against => [:date, :date_month, :venue_name, :venue_city, :venue_country, :dates_for_search,
+  multisearchable :against => [:venue_name, :venue_city, :venue_country, :dates_for_search,
     :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten, :track_annotations]
 
   extend FriendlyId
