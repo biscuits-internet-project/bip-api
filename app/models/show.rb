@@ -73,7 +73,7 @@ class Show < ApplicationRecord
   end
 
   def shows_on_same_day
-    self.class.by_day_of_year(self.date.month, self.day).where.not(id: self.id).order(:date)
+    self.class.by_day_of_year(self.date.month, self.date.day).where.not(id: self.id).order(:date)
   end
 
   def date_for_url
