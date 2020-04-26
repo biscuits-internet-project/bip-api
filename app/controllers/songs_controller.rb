@@ -39,7 +39,7 @@ class SongsController < ApplicationController
     song = Song.new(song_params)
 
     if song.save
-      render json: SongSerializer.render(song), status: :created
+      render json: SongSerializer.render(song, view: :details), status: :created
     else
       render json: song.errors, status: :unprocessable_entity
     end
@@ -48,7 +48,7 @@ class SongsController < ApplicationController
   # PATCH/PUT /songs/1
   def update
     if @song.update(song_params)
-      render json: SongSerializer.render(@song)
+      render json: SongSerializer.render(@song, view: :details)
     else
       render json: @song.errors, status: :unprocessable_entity
     end
@@ -65,6 +65,6 @@ class SongsController < ApplicationController
     end
 
     def song_params
-      params.permit(:title, :cover, :notes, :lyrics, :tabs, :author_id, :history, :featured_lyric)
+      params.permit(:title, :cover, :notes, :lyrics, :tabs, :author_id, :history, :featured_lyric, :guitar_tabs_url)
     end
 end

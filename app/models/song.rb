@@ -50,9 +50,7 @@ class Song < ApplicationRecord
   end
 
   def update_stats
-
     self.update_columns(self.collect_stats)
-
   end
 
   def collect_stats
@@ -101,19 +99,19 @@ class Song < ApplicationRecord
   # { delta_shows => { date: <date of this show>, previous: <date of previous show>, delta_days: <days since previous show> } }
   def calculate_longest_gaps(top=5)
     tracks_with_deltas = Track.find_by_sql(sprintf('
-      SELECT *, 
+      SELECT *,
         (SELECT count(*) FROM (SELECT distinct(id) FROM shows WHERE date > subselect.previous_date AND date <= subselect.date) as subq1) as delta_shows
-      FROM "tracks" 
+      FROM "tracks"
       INNER JOIN (
-        SELECT tracks.*, detailed_shows.* 
-        FROM "tracks" 
+        SELECT tracks.*, detailed_shows.*
+        FROM "tracks"
         INNER JOIN (
-          SELECT shows.id as show_id, shows.date as date, lag(shows.date, 1) OVER (ORDER BY shows.date) AS previous_date, shows.date - lag(shows.date, 1) OVER (ORDER BY shows.date) as delta_days 
-          FROM "shows" 
+          SELECT shows.id as show_id, shows.date as date, lag(shows.date, 1) OVER (ORDER BY shows.date) AS previous_date, shows.date - lag(shows.date, 1) OVER (ORDER BY shows.date) as delta_days
+          FROM "shows"
           WHERE (id IN (SELECT shows.id FROM "tracks" INNER JOIN "shows" ON "shows"."id" = "tracks"."show_id" WHERE "tracks"."song_id" = \'%s\'))
-        ) AS detailed_shows 
-        ON detailed_shows.show_id = tracks.show_id 
-        WHERE "tracks"."song_id" = \'%s\' 
+        ) AS detailed_shows
+        ON detailed_shows.show_id = tracks.show_id
+        WHERE "tracks"."song_id" = \'%s\'
         ORDER BY date
       ) as subselect ON subselect.id = tracks.id ORDER BY delta_shows DESC LIMIT %d;
     ', self.id, self.id, top))

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_14_014605) do
+ActiveRecord::Schema.define(version: 2020_04_26_144332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -278,6 +278,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_014605) do
     t.jsonb "longest_gaps_data", default: {}, null: false
     t.integer "most_common_year"
     t.integer "least_common_year"
+    t.text "guitar_tabs_url"
     t.index ["longest_gaps_data"], name: "index_songs_on_longest_gaps_data", using: :gin
     t.index ["slug"], name: "index_songs_on_slug", unique: true
     t.index ["yearly_play_data"], name: "index_songs_on_yearly_play_data", using: :gin

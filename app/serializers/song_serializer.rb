@@ -4,9 +4,9 @@ class SongSerializer < Blueprinter::Base
   fields :id, :title, :slug, :cover, :author_name, :author_id, :times_played, :date_last_played
 
   view :details do
-    fields :history, :featured_lyric, :notes, :lyrics, :tabs, 
+    fields :history, :featured_lyric, :notes, :lyrics, :tabs,
       :shows_since_last_played, :yearly_play_chart_data, :most_common_year,
-      :least_common_year, :longest_gaps_data
+      :least_common_year, :longest_gaps_data, :guitar_tabs_url
     association :first_played_show, blueprint: ShowSerializer
     association :last_played_show, blueprint: ShowSerializer
   end
