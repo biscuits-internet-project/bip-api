@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       post :unlike, to: 'likes#destroy'
     end
 
+    get '/metrics', to: 'metrics#index'
     get '/attendances', to: 'users#attendances'
     get '/ratings', to: 'users#ratings'
     get '/favorites', to: 'users#favorites'

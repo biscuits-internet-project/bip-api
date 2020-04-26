@@ -253,8 +253,8 @@ ActiveRecord::Schema.define(version: 2020_04_14_014605) do
     t.string "mem5"
     t.string "mem6"
     t.string "mem7"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
   end
 
   create_table "songs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
