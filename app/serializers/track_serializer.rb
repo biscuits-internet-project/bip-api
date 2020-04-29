@@ -1,7 +1,7 @@
 class TrackSerializer < Blueprinter::Base
   identifier :id
 
-  fields :set, :position, :note, :slug, :song_id, :all_timer, :annotations
+  fields :set, :position, :note, :slug, :song_id, :all_timer, :annotations, :average_rating
   field :segue, default: ""
   field :annotations do |track, options|
     track.annotations.map(&:desc)

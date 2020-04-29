@@ -1,41 +1,21 @@
 class RatingsController < ApplicationController
   before_action :set_rating, only: [:show, :update, :destroy]
 
-  # GET /ratings
-  def index
-    @ratings = Rating.all
-
-    render json: @ratings
-  end
-
-  # GET /ratings/1
-  def show
-    render json: @rating
-  end
-
-  # POST /ratings
+  # POST /:resource_type/:resource_id/rate
   def create
-    @rating = Rating.new(rating_params)
+    rating = Rating.find_by(rateable: resource, user: current_user)
 
-    if @rating.save
-      render json: @rating, status: :created, location: @rating
+    if rating.present?
+      rating.update_attribute(:value, params[:value])
     else
-      render json: @rating.errors, status: :unprocessable_entity
+      rating = Rating.new(rateable: resource, user: current_user, value: params[:value], show_id: resource.id)
+      if !rating.save
+        render json: rating.errors, status: :unprocessable_entity
+        return
+      end
     end
-  end
 
-  # PATCH/PUT /ratings/1
-  def update
-    if @rating.update(rating_params)
-      render json: @rating
-    else
-      render json: @rating.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /ratings/1
-  def destroy
-    @rating.destroy
+    render :ok
   end
 
   private

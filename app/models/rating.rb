@@ -1,15 +1,15 @@
 class Rating < ApplicationRecord
+  belongs_to :rateable, polymorphic: true
   belongs_to :user
-  belongs_to :show
 
-  validates :show, :user, :value, presence: true
+  validates :rateable, :user, :value, presence: true
   validates_inclusion_of :value, in: 1..5
 
-  after_save :update_show_average
+  after_save :update_average
 
   private
 
-  def update_show_average
-    show.update_attribute(:average_rating, show.ratings.average(:value))
+  def update_average
+    rateable.update_attribute(:average_rating, rateable.ratings.average(:value))
   end
 end

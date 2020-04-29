@@ -19,7 +19,6 @@ Rails.application.routes.draw do
       post :unattend, on: :member
       post :favorite, on: :member
       post :unfavorite, on: :member
-      post :rate, on: :member
       get :photos, on: :member, to: "show_photos#index"
       get :user, on: :collection
       resources :reviews, only: [:create, :index]
@@ -36,6 +35,8 @@ Rails.application.routes.draw do
     scope path: '/:resource_type/:resource_id', shallow_path: "" do
       post :like, to: 'likes#create'
       post :unlike, to: 'likes#destroy'
+
+      post :rate, to: 'ratings#create'
     end
 
     get '/metrics', to: 'metrics#index'

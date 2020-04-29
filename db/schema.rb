@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_26_144332) do
+ActiveRecord::Schema.define(version: 2020_04_29_114956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -178,6 +178,9 @@ ActiveRecord::Schema.define(version: 2020_04_26_144332) do
     t.uuid "show_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "rateable_type"
+    t.uuid "rateable_id"
+    t.index ["rateable_type", "rateable_id"], name: "index_ratings_on_rateable_type_and_rateable_id"
     t.index ["show_id"], name: "index_ratings_on_show_id"
     t.index ["user_id"], name: "index_ratings_on_user_id"
   end
@@ -327,6 +330,7 @@ ActiveRecord::Schema.define(version: 2020_04_26_144332) do
     t.boolean "all_timer", default: false
     t.uuid "previous_track_id"
     t.uuid "next_track_id"
+    t.float "average_rating", default: 0.0
     t.index ["likes_count"], name: "index_tracks_on_likes_count"
     t.index ["next_track_id"], name: "index_tracks_on_next_track_id"
     t.index ["previous_track_id"], name: "index_tracks_on_previous_track_id"

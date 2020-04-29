@@ -123,23 +123,6 @@ class ShowsController < ApplicationController
     render head: :ok
   end
 
-  def rate
-    rating = Rating.find_by(show: @show, user: current_user)
-
-    if rating.present?
-      rating.update_attribute(:value, params[:value])
-    else
-      puts params[:value]
-      rating = Rating.new(show: @show, user: current_user, value: params[:value])
-      if !rating.save
-        render json: rating.errors, status: :unprocessable_entity
-        return
-      end
-    end
-
-    render :ok
-  end
-
   private
 
   def base_shows

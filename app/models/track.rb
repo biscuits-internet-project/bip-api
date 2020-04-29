@@ -1,6 +1,8 @@
 class Track < ApplicationRecord
   extend FriendlyId
   include Likeable
+  include Rateable
+
   acts_as_taggable_on :track_tags
 
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders, :history]
@@ -11,7 +13,6 @@ class Track < ApplicationRecord
   belongs_to :show
   belongs_to :previous_track, class_name: 'Track', optional: true
   belongs_to :next_track, class_name: 'Track', optional: true
-
   has_many :annotations, dependent: :destroy
   has_one :venue, through: :show
 

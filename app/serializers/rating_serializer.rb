@@ -1,5 +1,5 @@
 class RatingSerializer < Blueprinter::Base
 
-  fields :show_id, :value
+  fields :rateable_id, :rateable_type, :value
 
 end
