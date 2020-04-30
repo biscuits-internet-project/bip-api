@@ -8,7 +8,7 @@ class RatingsController < ApplicationController
     if rating.present?
       rating.update_attribute(:value, params[:value])
     else
-      rating = Rating.new(rateable: resource, user: current_user, value: params[:value], show_id: resource.id)
+      rating = Rating.new(rateable: resource, user: current_user, value: params[:value], rateable: resource)
       if !rating.save
         render json: rating.errors, status: :unprocessable_entity
         return
