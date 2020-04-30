@@ -45,7 +45,7 @@ class ShowsController < ApplicationController
     show_ids = begin
       current_user.attendances.pluck(:show_id) +
       current_user.favorites.pluck(:show_id) +
-      current_user.ratings.pluck(:show_id)
+      current_user.ratings.where(rateable_type: "Show").pluck(:rateable_id)
     end.uniq
 
     shows = base_shows.where(id: show_ids).sort {|a,b| a.date <=> b.date }

@@ -6,7 +6,8 @@ class MetricsGet
       select
         (select count(id) from shows) as total_show_count,
         (select count(distinct(user_id)) from ratings) as ratings_distinct_user_count,
-        (select count(distinct(show_id)) from ratings) as ratings_distinct_show_count,
+        (select count(*) from ratings where rateable_type = 'Show') as ratings_distinct_show_count,
+        (select count(*) from ratings where rateable_type = 'Track') as ratings_distinct_track_count,
         (select count(*) from users) as user_count,
         (select count(*) from ratings) as rating_count,
         (select count(*) from reviews) as review_count,
