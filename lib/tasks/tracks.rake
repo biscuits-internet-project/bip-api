@@ -1,8 +1,16 @@
 namespace :tracks do
+
+  task :inverted_tags => [:environment] do
+    tracks = Track.joins(:annotations).where("annotations.desc like ('%Inverted%') or annotations.desc like ('%inverted%')").to_a
+
+    tracks.each do |t|
+      t.tag_list.add("inverted")
+      t.save
+    end
+  end
+
   task :backfill => [:environment] do
-
     Track.where(previous_track_id: nil, next_track_id: nil).each(&:update_previous_and_next_tracks)
-
   end
 
   task :build => [:environment] do

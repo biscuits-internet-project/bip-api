@@ -8,9 +8,9 @@ class TrackSerializer < Blueprinter::Base
   end
 
   view :versions do
-    # field :track_tags, name: :tags do |track, options|
-    #   track.track_tags.map(&:name)
-    # end
+    field :tags, name: :tags do |track, options|
+      track.tags.map(&:name)
+    end
     association :venue, blueprint: VenueSerializer
     association :show, blueprint: ShowSerializer
     association :previous_track, blueprint: TrackSerializer

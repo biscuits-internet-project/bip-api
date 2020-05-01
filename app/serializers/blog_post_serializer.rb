@@ -2,8 +2,11 @@ class BlogPostSerializer < Blueprinter::Base
   identifier :id
 
   fields :id, :title, :slug, :blurb, :content, :state, :published_at,
-   :tag_list, :primary_image_url, :secondary_image_url
+   :primary_image_url, :secondary_image_url
   association :user, blueprint: UserSerializer, view: :public
+  field :tag_list, name: :tags do |track, options|
+    track.tags.map(&:name)
+  end
 
   view :full do
     field :content

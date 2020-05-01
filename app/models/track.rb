@@ -3,7 +3,7 @@ class Track < ApplicationRecord
   include Likeable
   include Rateable
 
-  acts_as_taggable_on :track_tags
+  acts_as_taggable
 
   friendly_id :slug_candidates, use: [:sequentially_slugged, :finders, :history]
 

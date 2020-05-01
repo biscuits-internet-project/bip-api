@@ -5,7 +5,7 @@ class BlogPostsController < ApplicationController
 
   # GET /blog_posts
   def index
-    posts = BlogPost.includes(:primary_image_attachment, :secondary_image_attachment, :user, :taggings)
+    posts = BlogPost.includes(:primary_image_attachment, :secondary_image_attachment, :user, :tags)
 
     begin
       if params[:state]
