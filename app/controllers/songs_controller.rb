@@ -10,7 +10,7 @@ class SongsController < ApplicationController
       songs = SongSerializer.render(s, view: :details)
     else
       songs = Rails.cache.fetch('songs:all') do
-        s = Song.includes(:author).where("times_played > 0").order(:title).all.to_a
+        s = Song.includes(:author).order(:title).all.to_a
         SongSerializer.render(s)
       end
     end
