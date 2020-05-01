@@ -2,9 +2,16 @@ namespace :tracks do
 
   task :inverted_tags => [:environment] do
     tracks = Track.joins(:annotations).where("annotations.desc like ('%Inverted%') or annotations.desc like ('%inverted%')").to_a
-
     tracks.each do |t|
       t.tag_list.add("inverted")
+      t.save
+    end
+  end
+
+  task :unfinished_tags => [:environment] do
+    tracks = Track.joins(:annotations).where("annotations.desc ILIKE ('%unfinished%')").to_a
+    tracks.each do |t|
+      t.tag_list.add("unfinished")
       t.save
     end
   end
