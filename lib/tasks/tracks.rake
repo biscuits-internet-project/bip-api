@@ -24,6 +24,22 @@ namespace :tracks do
     end
   end
 
+  task :dub_tags => [:environment] do
+    tracks = Track.joins(:annotations).where("annotations.desc ILIKE ('%dub%') OR annotations.desc ILIKE ('%reggae%')").to_a
+    tracks.each do |t|
+      t.tag_list.add("dub")
+      t.save
+    end
+  end
+
+  task :dyslexic_tags => [:environment] do
+    tracks = Track.joins(:annotations).where("annotations.desc ILIKE ('%dyslexic%')").to_a
+    tracks.each do |t|
+      t.tag_list.add("dyslexic")
+      t.save
+    end
+  end
+
   task :backfill => [:environment] do
     Track.where(previous_track_id: nil, next_track_id: nil).each(&:update_previous_and_next_tracks)
   end
