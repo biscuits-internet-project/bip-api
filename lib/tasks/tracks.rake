@@ -16,6 +16,14 @@ namespace :tracks do
     end
   end
 
+  task :ending_only_tags => [:environment] do
+    tracks = Track.joins(:annotations).where("annotations.desc ILIKE ('end only%') OR annotations.desc ILIKE ('ending only')").to_a
+    tracks.each do |t|
+      t.tag_list.add("ending-only")
+      t.save
+    end
+  end
+
   task :backfill => [:environment] do
     Track.where(previous_track_id: nil, next_track_id: nil).each(&:update_previous_and_next_tracks)
   end
