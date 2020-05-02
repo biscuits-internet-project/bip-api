@@ -20,7 +20,7 @@ class TracksController < ApplicationController
   end
 
   def charts
-    tracks = Track.includes(:track_tag_taggings, :track_tags, :annotations, [song: :author], show: [:venue, :show_youtubes]).where("COALESCE(note, '') != ''").order('shows.date').to_a
+    tracks = Track.includes(:tags, :annotations, [song: :author], show: [:venue, :show_youtubes]).where("COALESCE(note, '') != ''").order('shows.date').to_a
 
     render json: TrackSerializer.render(tracks, view: :charts)
   end
