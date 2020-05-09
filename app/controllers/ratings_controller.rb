@@ -15,7 +15,7 @@ class RatingsController < ApplicationController
       end
     end
 
-    render :ok
+    render json: { average_rating: resource.average_rating }
   end
 
   private

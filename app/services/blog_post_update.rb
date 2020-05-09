@@ -22,6 +22,8 @@ class BlogPostUpdate
       blog_post.secondary_image.attach(secondary_image)
     end
 
+    post.published_at = Date.now if post.state == "published"
+
     if blog_post.save
       return blog_post
     else
