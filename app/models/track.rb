@@ -36,6 +36,14 @@ class Track < ApplicationRecord
     annotations.destroy_all
     anns.compact.each do |ann|
       annotations << Annotation.new(desc: ann)
+
+      tags = ["inverted", "unfinished", "ending only", "dub", "dyslexic"]
+      tags.each do |tag|
+        if ann.downcase.include?(tag)
+          tag_list.add(tag.gsub(" ", "-"))
+          save
+        end
+      end
     end
   end
 
