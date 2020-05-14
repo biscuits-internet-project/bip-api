@@ -18,6 +18,7 @@ class PasswordUpdate
 
     user.password = password
     user.password_confirmation = password
+    user.confirmed_at = DateTime.now if confirmed_at.blank?
 
     if user.save
       return user
