@@ -36,15 +36,17 @@ class Track < ApplicationRecord
     annotations.destroy_all
     anns.compact.each do |ann|
       annotations << Annotation.new(desc: ann)
-
       tags = ["inverted", "unfinished", "ending only", "dub", "dyslexic"]
       tags.each do |tag|
+        t = tag.gsub(" ", "-")
         if ann.downcase.include?(tag)
-          tag_list.add(tag.gsub(" ", "-"))
-          save
+          tag_list.add(t)
+        else
+          tag_list.remove(t)
         end
       end
     end
+    save
   end
 
   def update_previous_and_next_tracks
