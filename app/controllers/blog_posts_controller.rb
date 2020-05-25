@@ -1,6 +1,8 @@
 class BlogPostsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show, :tags]
   before_action :authorize_admin, only: [:create, :update, :destroy, :publish]
+  before_action :authenticate_request, only: [:index], if: proc { params[:state] == "draft" }
+  before_action :authorize_admin, only: [:index], if: proc { params[:state] == "draft" }
   before_action :set_blog_post, only: [:show, :update, :destroy, :publish]
 
   # GET /blog_posts
@@ -10,14 +12,6 @@ class BlogPostsController < ApplicationController
     begin
       if params[:state]
         posts = posts.state(params[:state])
-
-        if params[:state] == "draft"
-          authenticate_request
-          if current_user.nil?
-            return
-          end
-          posts = posts.where(user_id: current_user.id)
-        end
       else
         posts = posts.state('published')
       end
