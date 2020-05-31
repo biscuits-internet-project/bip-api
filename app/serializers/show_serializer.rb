@@ -16,4 +16,11 @@ class ShowSerializer < Blueprinter::Base
   view :setlist do
     association :tracks, blueprint: TrackSerializer, view: :setlist
   end
+
+  view :ratings do 
+    field :ratings_count do |show, options|
+      show.ratings.count
+    end
+  end
+
 end

@@ -14,6 +14,10 @@ class ShowsController < ApplicationController
         ids = Show.order("date desc").limit(params[:last].to_i)
         shows = Show.includes(:venue, :show_youtubes, tracks: [:annotations, :song]).merge(Track.setlist).where(id: ids).to_a
         shows = shows.sort {|a,b| b.date <=> a.date }
+      elsif params[:top_rated].present?
+        shows = Show.joins(:ratings).includes(:venue, :show_youtubes).group("shows.id").having("count(*) >= 5").order("shows.average_rating DESC, ratings.count DESC").take(100)
+        render json: ShowSerializer.render(shows, view: :ratings)
+        return
       else
         shows = base_shows
         if params[:year].present?
