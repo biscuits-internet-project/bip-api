@@ -6,7 +6,7 @@ services:
       - "5435:5432"
     environment:
       POSTGRES_USER: development
-      POSTGRES_PASSWORD:
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: bip_dev
     volumes:
       - ./tmp/db:/var/lib/postgresql/data

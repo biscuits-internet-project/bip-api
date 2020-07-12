@@ -1,12 +1,15 @@
 class BlogPostsController < ApplicationController
   skip_before_action :authenticate_request, only: [:index, :show, :tags]
   before_action :authorize_admin, only: [:create, :update, :destroy, :publish]
-  before_action :authenticate_request, only: [:index], if: proc { params[:state] == "draft" }
-  before_action :authorize_admin, only: [:index], if: proc { params[:state] == "draft" }
   before_action :set_blog_post, only: [:show, :update, :destroy, :publish]
 
   # GET /blog_posts
   def index
+    if params[:state] == "draft"
+      authenticate_request
+      authorize_admin
+    end
+
     posts = BlogPost.includes(:primary_image_attachment, :secondary_image_attachment, :user, :tags)
 
     begin
@@ -20,6 +23,8 @@ class BlogPostsController < ApplicationController
         posts = posts.joins(:user).where(users: { username: params[:username] })
       end
     end
+
+    posts = posts.order("published_at DESC")
 
     render json: BlogPostSerializer.render(posts)
   end
@@ -37,7 +42,7 @@ class BlogPostsController < ApplicationController
       blog_post = BlogPost.find(command.result.id)
       render json: BlogPostSerializer.render(blog_post, view: :full), status: :created
     else
-      render json: blog_post.errors, status: :unprocessable_entity
+      render json: command.errors, status: :unprocessable_entity
     end
   end
 

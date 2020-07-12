@@ -11,7 +11,7 @@ class BlogPost < ApplicationRecord
 
   belongs_to :user
 
-  validates :title, :slug, :state, presence: true
+  validates :title, :slug, :state, :user, presence: true
   validates :slug, uniqueness: true
 
   scope :state, -> (state) { where(state: state) }

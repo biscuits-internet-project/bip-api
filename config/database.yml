@@ -9,7 +9,9 @@ default: &default
 development:
   <<: *default
   database: bip_dev
+  password: password
 
 test:
   <<: *default
   database: bip_test
+  password: password

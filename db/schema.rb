@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_02_153430) do
+ActiveRecord::Schema.define(version: 2020_07_12_154543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 2020_05_02_153430) do
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "post_type", default: "blog", null: false
     t.index ["published_at"], name: "blog_posts_published_at_idx"
     t.index ["state"], name: "blog_posts_state_idx"
     t.index ["title"], name: "blog_posts_title_idx"
