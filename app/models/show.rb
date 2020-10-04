@@ -1,7 +1,7 @@
 class Show < ApplicationRecord
   include PgSearch::Model
   multisearchable :against => [:venue_name, :venue_city, :venue_country, :dates_for_search,
-    :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten, :track_annotations]
+    :venue_state_name, :venue_state, :notes, :song_titles, :has_photos, :has_youtube, :has_relisten, :track_annotations, :has_reviews]
 
   extend FriendlyId
   include Likeable
@@ -47,6 +47,10 @@ class Show < ApplicationRecord
 
   def has_relisten
     return "relisten" if relisten_url.present?
+  end
+
+  def has_reviews
+    return "reviews" if reviews.exists?
   end
 
   def dates_for_search

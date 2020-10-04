@@ -1,7 +1,7 @@
 class ShowSerializer < Blueprinter::Base
   identifier :id
 
-  fields :id, :slug, :venue_id, :notes, :likes_count, :relisten_url, :show_youtubes_count, :show_photos_count, :average_rating
+  fields :id, :slug, :venue_id, :notes, :likes_count, :relisten_url, :show_youtubes_count, :show_photos_count, :show_reviews_count, :average_rating
   field :date, datetime_format: "%Y-%m-%d"
   field :youtube_ids do |show, options|
     show.show_youtubes.map(&:video_id)
