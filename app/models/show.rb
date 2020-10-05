@@ -50,7 +50,7 @@ class Show < ApplicationRecord
   end
 
   def has_reviews
-    return "reviews" if reviews.exists?
+    return "reviews review" if reviews.exists?
   end
 
   def dates_for_search
