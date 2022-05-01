@@ -22,6 +22,8 @@ class Track < ApplicationRecord
   delegate :title, to: :song, prefix: true
   delegate :slug, to: :song, prefix: true
 
+  after_save :update_show_previous_and_next_tracks
+
   def slug_candidates
     [
       [show.date_for_url, song.slug, :set, :position]
@@ -47,6 +49,12 @@ class Track < ApplicationRecord
       end
     end
     save
+  end
+
+  def update_show_previous_and_next_tracks
+    self.show.tracks.each do |track|
+      track.update_previous_and_next_tracks
+    end
   end
 
   def update_previous_and_next_tracks
