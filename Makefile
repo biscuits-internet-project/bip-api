@@ -1,33 +1,33 @@
 create:
-	docker-compose run web bundle exec rake db:create
-	docker-compose run web bundle exec rake db:schema:load
+	docker-compose run bip-web bundle exec rake db:create
+	docker-compose run bip-web bundle exec rake db:schema:load
 
 migrate:
-	docker-compose run web bundle exec rake db:migrate
+	docker-compose run bip-web bundle exec rake db:migrate
 
 rollback:
-	docker-compose run web bundle exec rake db:rollback
+	docker-compose run bip-web bundle exec rake db:rollback
 
 build:
 	docker-compose build
 
 seed:
-	docker-compose run web bundle exec rake db:seed
+	docker-compose run bip-web bundle exec rake db:seed
  
 up:
 	docker-compose up
  
 test:
-	docker-compose run web rake
+	docker-compose run bip-web rake
  
 console:
-	docker-compose run web "bin/rails c"
+	docker-compose run bip-web "bin/rails c"
 
 bash:
-	docker-compose run web bash 
+	docker-compose run bip-web bash 
 
 rake:
-	docker-compose run web rake $(cmd)
+	docker-compose run bip-web rake $(cmd)
 
 clean:
 	rm -rf ./tmp

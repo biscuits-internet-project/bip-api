@@ -1,6 +1,6 @@
 version: "3"
 services:
-  db:
+  bip-db:
     image: postgres
     ports:
       - "5435:5432"
@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: bip_dev
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
-  web:
+  bip-web:
     build: .
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
@@ -18,9 +18,9 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
-      - redis
-  redis:
+      - bip-db
+      - bip-redis
+  bip-redis:
     image: "redis:5.0-alpine"
     volumes:
       - "redis:/data"
